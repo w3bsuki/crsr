@@ -1,50 +1,67 @@
 "use client";
 
 import { memo } from "react";
-import Image from "next/image";
 import { Puzzle } from "lucide-react";
 import { GradientButton } from "./ui/gradient-button";
+import {
+  AWSLogo,
+  GCPLogo,
+  AzureLogo,
+  TensorFlowLogo,
+  PyTorchLogo,
+  DockerLogo,
+  KubernetesLogo,
+  MongoDBLogo
+} from "./ui/integration-logos";
 
 const integrations = [
   {
     name: "AWS",
-    logo: "/logos/aws.svg",
+    Logo: AWSLogo,
     description: "Cloud Infrastructure",
+    gradient: "from-[#FF9900] to-[#FFC300]"
   },
   {
     name: "Google Cloud",
-    logo: "/logos/google-cloud.svg",
+    Logo: GCPLogo,
     description: "ML & Analytics",
+    gradient: "from-[#4285F4] to-[#34A853]"
   },
   {
     name: "Microsoft Azure",
-    logo: "/logos/azure.svg",
+    Logo: AzureLogo,
     description: "Enterprise Solutions",
+    gradient: "from-[#008AD7] to-[#00A4EF]"
   },
   {
     name: "TensorFlow",
-    logo: "/logos/tensorflow.svg",
+    Logo: TensorFlowLogo,
     description: "ML Framework",
+    gradient: "from-[#FF6F00] to-[#FF9900]"
   },
   {
     name: "PyTorch",
-    logo: "/logos/pytorch.svg",
+    Logo: PyTorchLogo,
     description: "Deep Learning",
+    gradient: "from-[#EE4C2C] to-[#FF6F00]"
   },
   {
     name: "Docker",
-    logo: "/logos/docker.svg",
+    Logo: DockerLogo,
     description: "Containerization",
+    gradient: "from-[#2496ED] to-[#2496ED]"
   },
   {
     name: "Kubernetes",
-    logo: "/logos/kubernetes.svg",
+    Logo: KubernetesLogo,
     description: "Orchestration",
+    gradient: "from-[#326CE5] to-[#326CE5]"
   },
   {
     name: "MongoDB",
-    logo: "/logos/mongodb.svg",
+    Logo: MongoDBLogo,
     description: "Database",
+    gradient: "from-[#13AA52] to-[#00ED64]"
   }
 ];
 
@@ -55,16 +72,12 @@ const IntegrationCard = memo(function IntegrationCard({
 }) {
   return (
     <div className="group relative">
-      <div className="absolute inset-0 rounded-2xl bg-white/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className={`absolute inset-0 rounded-2xl opacity-0 bg-gradient-to-br ${integration.gradient} 
+        transition-opacity duration-300 group-hover:opacity-10`} />
       
       <div className="relative flex items-center gap-4 rounded-2xl border border-white/[0.08] p-4">
-        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white/[0.03]">
-          <Image
-            src={integration.logo}
-            alt={integration.name}
-            fill
-            className="object-contain p-2 transition-transform duration-300 group-hover:scale-110"
-          />
+        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white/[0.03] p-2">
+          <integration.Logo className="w-full h-full transition-transform duration-300 group-hover:scale-110" />
         </div>
         
         <div>
