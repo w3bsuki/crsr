@@ -5,6 +5,15 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState, useRef, useMemo } from "react"
 import { cn } from "@/lib/utils"
 
+// Define feature type
+interface Feature {
+  title: string;
+  description: string;
+  gradient: string;
+  delay: number;
+  type: 'processing' | 'neural' | 'quantum';
+}
+
 // Custom hook for mouse tracking
 function useMouseTracking(gradient?: string) {
   const mouseX = useMotionValue(0)
@@ -98,7 +107,7 @@ function Particles({ className }: { className?: string }) {
 }
 
 // Create a separate component for feature cards
-function FeatureCard({ feature }: { feature: typeof features[0] }) {
+function FeatureCard({ feature }: { feature: Feature }) {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const gradient = feature.gradient.split(' ')[1].replace('to-', '')
@@ -199,29 +208,29 @@ export default function Features() {
   }
 
   // Create memoized feature data
-  const features = useMemo(() => [
+  const features: Feature[] = [
     {
       title: "Real-time Processing",
       description: "Process and analyze data in real-time with advanced AI algorithms",
       gradient: "from-cyan-500 to-blue-500",
       delay: 0.2,
-      type: 'processing' as const
+      type: 'processing'
     },
     {
       title: "Neural Networks",
       description: "Leverage deep learning models for complex pattern recognition",
       gradient: "from-purple-500 to-pink-500",
       delay: 0.4,
-      type: 'neural' as const
+      type: 'neural'
     },
     {
       title: "Quantum Computing",
       description: "Future-proof your applications with quantum-ready algorithms",
       gradient: "from-amber-500 to-orange-500",
       delay: 0.6,
-      type: 'quantum' as const
+      type: 'quantum'
     }
-  ], [])
+  ]
 
   useEffect(() => {
     setIsClient(true)
