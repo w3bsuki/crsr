@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 interface Feature3DProps {
   type: 'processing' | 'neural' | 'quantum';
@@ -39,7 +39,7 @@ export function FeatureCanvas({ type }: Feature3DProps) {
     scene.add(pointLight2);
 
     // Controls
-    const controls = new OrbitControlsImpl(camera, renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.autoRotate = true;
