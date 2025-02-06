@@ -39,7 +39,7 @@ export function GradientButton({
         }}
         initial={false}
         animate={{ scale: [0.9, 1.1, 1] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
+        transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY }}
       />
     </motion.button>
   )
