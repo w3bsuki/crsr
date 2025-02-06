@@ -5,6 +5,7 @@ import { Apple } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import dynamic from 'next/dynamic'
 import { Suspense } from "react"
+import { MobileNav } from "@/components/ui/mobile-nav"
 
 const Connect = dynamic(() => import('@/components/Connect').then(mod => mod.Connect), { ssr: false })
 const HeroGeometric = dynamic(() => import('@/components/ui/shape-landing-hero').then(mod => mod.HeroGeometric), { ssr: false })
@@ -51,8 +52,8 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-black text-white">
       <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm border-b border-white/[0.08]">
         <div className="max-w-[1400px] mx-auto">
-          <nav className="h-[72px] flex items-center">
-            <div className="w-[280px] pl-6">
+          <nav className="h-[72px] flex items-center px-4 md:px-6">
+            <div className="flex-1 md:w-[280px]">
               <Link 
                 href="/" 
                 className="group flex items-center gap-3 hover:opacity-90 transition-opacity"
@@ -75,7 +76,8 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="flex-1 flex justify-center">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex flex-1 justify-center">
               <div className="flex items-center justify-center gap-16">
                 {["AGENTS", "SOLUTIONS", "ABOUT"].map((item) => (
                   <Link 
@@ -89,21 +91,27 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="w-[280px] flex items-center justify-end pr-6 gap-5">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                className="h-9 px-4 text-[13px] text-white hover:text-white hover:bg-white/[0.03] transition-all tracking-[0.2em] font-medium"
-              >
-                SIGN IN
-              </Button>
-              <Button
-                variant="outline"
-                className="h-9 px-4 gap-2.5 text-[13px] bg-transparent border-white/[0.15] text-white hover:bg-white hover:text-black transition-all tracking-[0.2em] font-medium"
-              >
-                <Apple className="w-[15px] h-[15px]" />
-                DOWNLOAD
-              </Button>
+            <div className="flex items-center justify-end flex-1 md:w-[280px] gap-2 md:gap-5">
+              {/* Desktop Buttons */}
+              <div className="hidden md:flex items-center gap-5">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-9 px-4 text-[13px] text-white hover:text-white hover:bg-white/[0.03] transition-all tracking-[0.2em] font-medium"
+                >
+                  SIGN IN
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-9 px-4 gap-2.5 text-[13px] bg-transparent border-white/[0.15] text-white hover:bg-white hover:text-black transition-all tracking-[0.2em] font-medium"
+                >
+                  <Apple className="w-[15px] h-[15px]" />
+                  DOWNLOAD
+                </Button>
+              </div>
+
+              {/* Mobile Navigation */}
+              <MobileNav />
             </div>
           </nav>
         </div>
