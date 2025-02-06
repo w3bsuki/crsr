@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, MotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { GradientButton } from "./gradient-button";
@@ -93,6 +93,11 @@ interface HeroGeometricProps {
     title2: string;
 }
 
+interface Transforms {
+    rotateX: MotionValue<number>;
+    rotateY: MotionValue<number>;
+}
+
 export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
     const [isMobile, setIsMobile] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -101,7 +106,7 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
     const springConfig = { stiffness: 125, damping: 25 };
     
     // Initialize transforms after component mounts
-    const [transforms, setTransforms] = useState({ rotateX: 0, rotateY: 0 });
+    const [transforms, setTransforms] = useState<Transforms | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -131,7 +136,7 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
     }, [mouseX, mouseY, springConfig]);
 
     // Don't render until after mount
-    if (!mounted) {
+    if (!mounted || !transforms) {
         return null;
     }
 
