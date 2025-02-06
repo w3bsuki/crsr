@@ -21,32 +21,23 @@ interface HeroGeometricProps {
 // Separate mobile component for better code splitting
 function MobileHero({ badge, title1, title2 }: HeroGeometricProps) {
     return (
-        <div className="relative w-full max-w-[1400px] mx-auto px-4 md:px-6 py-12">
-            <div className="relative z-10 text-center">
-                {/* Static gradient box */}
+        <div className="relative w-full max-w-[1400px] mx-auto px-4 py-12">
+            <div className="text-center">
                 <div className="mx-auto mb-4 h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500 to-rose-500" />
-                
-                {/* Badge */}
                 <div className="inline-block mb-4 text-xs font-medium tracking-wider uppercase bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent">
                     {badge}
                 </div>
-                
-                {/* Title */}
                 <h1 className="text-4xl font-bold tracking-tight leading-[1.1] mb-6">
                     <span className="block mb-2">{title1}</span>
                     <span className="block bg-gradient-to-r from-indigo-500 via-rose-400 to-indigo-500 bg-clip-text text-transparent">
                         {title2}
                     </span>
                 </h1>
-                
-                {/* Description */}
-                <div className="relative mx-auto max-w-[800px] mb-8">
+                <div className="mx-auto max-w-[800px] mb-8">
                     <p className="text-base text-white/70 px-4">
                         Experience the next generation of AI-powered solutions. Our platform combines cutting-edge technology with intuitive design to deliver unprecedented results.
                     </p>
                 </div>
-                
-                {/* Buttons */}
                 <div className="flex flex-col gap-3">
                     <GradientButton className="w-full">Get Started</GradientButton>
                     <GradientButton variant="secondary" className="w-full">Learn More</GradientButton>
@@ -60,17 +51,14 @@ export function ClientHero(props: HeroGeometricProps) {
     const [isMobile, setIsMobile] = useState(true);
 
     useEffect(() => {
-        // Only run on client
         if (typeof window === 'undefined') return;
 
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
         
-        // Initial check
         checkMobile();
         
-        // Debounced resize listener
         let timeoutId: NodeJS.Timeout;
         const handleResize = () => {
             clearTimeout(timeoutId);
@@ -84,75 +72,33 @@ export function ClientHero(props: HeroGeometricProps) {
         };
     }, []);
 
-    // Return mobile version for small screens
     if (isMobile) {
         return <MobileHero {...props} />;
     }
 
-    // Desktop version with animations
     return (
-        <div className="relative w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24">
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="relative z-10 text-center"
-            >
-                <motion.div
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="mx-auto mb-6 h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-rose-500"
-                />
-                <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="inline-block mb-6 text-sm font-medium tracking-wider uppercase bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent"
-                >
+        <div className="relative w-full max-w-[1400px] mx-auto px-4 py-16">
+            <div className="text-center">
+                <div className="mx-auto mb-6 h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-rose-500" />
+                <span className="inline-block mb-6 text-sm font-medium tracking-wider uppercase bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent">
                     {props.badge}
-                </motion.span>
-                <motion.h1 
-                    className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
-                >
-                    <motion.span
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        className="block"
-                    >
-                        {props.title1}
-                    </motion.span>
-                    <motion.span
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="block bg-gradient-to-r from-indigo-500 via-rose-400 to-indigo-500 bg-clip-text text-transparent"
-                    >
+                </span>
+                <h1 className="text-5xl font-bold tracking-tight leading-[1.1] mb-6">
+                    <span className="block">{props.title1}</span>
+                    <span className="block bg-gradient-to-r from-indigo-500 via-rose-400 to-indigo-500 bg-clip-text text-transparent">
                         {props.title2}
-                    </motion.span>
-                </motion.h1>
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    className="relative mx-auto max-w-[800px] mb-8 md:mb-12"
-                >
-                    <p className="text-lg md:text-xl text-white/70">
+                    </span>
+                </h1>
+                <div className="mx-auto max-w-[800px] mb-8">
+                    <p className="text-lg text-white/70">
                         Experience the next generation of AI-powered solutions. Our platform combines cutting-edge technology with intuitive design to deliver unprecedented results.
                     </p>
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    className="flex items-center justify-center gap-4"
-                >
+                </div>
+                <div className="flex items-center justify-center gap-4">
                     <GradientButton className="min-w-[200px]">Get Started</GradientButton>
                     <GradientButton variant="secondary" className="min-w-[200px]">Learn More</GradientButton>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
         </div>
     );
 } 
