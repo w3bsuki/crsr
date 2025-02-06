@@ -144,10 +144,10 @@ function FeatureCard({ feature }: { feature: Feature }) {
         transition: { duration: 0.3 }
       }}
     >
-      <div 
+      <motion.div 
         className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          background: gradientBackground
+          background: gradientBackground as string
         }}
       />
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-r opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-70"
