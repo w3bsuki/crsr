@@ -1,7 +1,6 @@
 "use client"
 
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion"
-import dynamic from 'next/dynamic'
 import { useEffect, useState, useRef, useMemo } from "react"
 import { cn } from "@/lib/utils"
 
@@ -11,7 +10,6 @@ interface Feature {
   description: string;
   gradient: string;
   delay: number;
-  type: 'processing' | 'neural' | 'quantum';
 }
 
 // Custom hook for mouse tracking
@@ -49,16 +47,6 @@ function useMouseTracking(gradient?: string) {
     gradientBackground
   }
 }
-
-// Import the 3D feature canvas with no SSR
-const FeatureCanvas = dynamic(() => import('@/components/ui/3d-feature-canvas').then(mod => mod.FeatureCanvas), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-48 flex items-center justify-center">
-      <div className="animate-pulse text-white/50">Loading 3D...</div>
-    </div>
-  )
-})
 
 // Particle effect component
 function Particles({ className }: { className?: string }) {
@@ -229,21 +217,18 @@ export default function Features() {
       description: "Process and analyze data in real-time with advanced AI algorithms",
       gradient: "from-cyan-500 to-blue-500",
       delay: 0.2,
-      type: 'processing'
     },
     {
       title: "Neural Networks",
       description: "Leverage deep learning models for complex pattern recognition",
       gradient: "from-purple-500 to-pink-500",
       delay: 0.4,
-      type: 'neural'
     },
     {
       title: "Quantum Computing",
       description: "Future-proof your applications with quantum-ready algorithms",
       gradient: "from-amber-500 to-orange-500",
       delay: 0.6,
-      type: 'quantum'
     }
   ]
 
