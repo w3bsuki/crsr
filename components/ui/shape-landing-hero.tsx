@@ -13,7 +13,7 @@ const ClientHero = dynamic(() => import('./client-hero').then(mod => mod.ClientH
 });
 
 const HeroLoadingState = () => (
-  <div className="relative w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24">
+  <div className="relative w-full max-w-[1200px] mx-auto px-4 md:px-6 py-16 md:py-24">
     <div className="animate-pulse space-y-8">
       <div className="h-4 bg-white/5 rounded w-24 mx-auto" />
       <div className="h-12 bg-white/5 rounded w-96 mx-auto" />
@@ -57,7 +57,7 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
 
   return (
     <section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
     >
       {/* Animated background gradient */}
@@ -72,84 +72,70 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left column - Content */}
-          <div className="text-left space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
-                <Sparkles className="w-4 h-4 text-purple-400" />
-                <span className="text-sm text-purple-400 font-medium">Enterprise AI Platform</span>
-              </div>
+      <div className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-8"
+          >
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            <span className="text-sm text-purple-400 font-medium">{badge}</span>
+          </motion.div>
 
-              {/* Main heading */}
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-                <span className="bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
-                  {title1}{" "}
-                </span>
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  {title2}
-                </span>
-              </h1>
+          {/* Main heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
+          >
+            <span className="bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+              {title1}{" "}
+            </span>
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              {title2}
+            </span>
+          </motion.h1>
 
-              {/* Description */}
-              <p className="text-lg text-white/60 max-w-xl">
-                Transform your business with our enterprise AI platform. Automate processes, optimize operations, and drive growth with intelligent solutions.
-              </p>
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-base sm:text-lg text-white/60 max-w-xl mb-8"
+          >
+            Transform your business with our enterprise AI platform. Automate processes and drive growth with intelligent solutions.
+          </motion.p>
 
-              {/* CTA buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <GradientButton className="group">
-                  Get Started
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+          {/* Primary CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col items-center gap-6"
+          >
+            <GradientButton className="group text-lg px-8 py-3">
+              Book a Demo
+              <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+            </GradientButton>
+
+            {/* Secondary CTAs */}
+            <div className="flex items-center gap-4">
+              <Link href="/agents">
+                <GradientButton variant="secondary" className="text-sm px-6">
+                  Agents
                 </GradientButton>
-                <Link href="/demo">
-                  <GradientButton variant="secondary">
-                    Schedule Demo
-                  </GradientButton>
-                </Link>
-              </div>
-
-              {/* Feature highlights */}
-              <div className="grid grid-cols-2 gap-4 pt-8">
-                <FeatureHighlight icon={Brain} text="Advanced AI Models" />
-                <FeatureHighlight icon={Bot} text="Intelligent Agents" />
-                <FeatureHighlight icon={Sparkles} text="Process Automation" />
-                <FeatureHighlight icon={ArrowRight} text="Quick Integration" />
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right column - 3D Visualization */}
-          <div className="relative lg:h-[600px]">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative h-full"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-3xl" />
-              <div className="relative h-full rounded-3xl border border-white/10 bg-black/50 backdrop-blur-xl p-8">
-                {/* Add your 3D visualization or demo content here */}
-                <div className="h-full flex items-center justify-center">
-                  <div className="text-center space-y-8">
-                    <div className="grid grid-cols-2 gap-8">
-                      <StatsItem value="99.9%" label="Uptime" />
-                      <StatsItem value="500+" label="Enterprise Clients" />
-                      <StatsItem value="24/7" label="Support" />
-                      <StatsItem value="1B+" label="API Requests" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+              </Link>
+              <Link href="/solutions">
+                <GradientButton variant="secondary" className="text-sm px-6">
+                  Solutions
+                </GradientButton>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
