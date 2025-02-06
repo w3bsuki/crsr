@@ -35,7 +35,7 @@ const nextConfig = {
     // Add support for importing Three.js examples
     config.resolve.alias = {
       ...config.resolve.alias,
-      'three/examples/jsm': 'three/examples/jsm',
+      'three/examples/jsm/controls/OrbitControls': require.resolve('three/examples/jsm/controls/OrbitControls'),
     }
 
     return config
