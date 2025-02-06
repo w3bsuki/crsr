@@ -31,40 +31,91 @@ interface Feature {
 }
 
 // Memoized card component for better performance
-const FeatureCard = memo(function FeatureCard({ feature }: { feature: Feature }) {
+const SolutionCard = memo(function SolutionCard({ feature }: { feature: Feature }) {
   return (
-    <div className="group relative">
-      <div className={`absolute inset-0 rounded-2xl opacity-50 bg-gradient-to-br ${feature.gradient} 
-        transition-opacity duration-300 group-hover:opacity-70`} />
+    <div className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:bg-white/[0.04] transition-colors duration-300">
+      <div className={`absolute inset-0 rounded-2xl opacity-0 bg-gradient-to-br ${feature.gradient} transition-opacity duration-300 group-hover:opacity-5`} />
       
-      <div className="relative p-6 rounded-2xl border border-white/[0.08]">
-        <div className="flex items-start justify-between mb-6">
-          <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} 
-            bg-opacity-10 transition-transform duration-300 group-hover:scale-110`}>
-            <feature.icon className="w-6 h-6 text-white/90" />
+      <div className="relative">
+        <div className="flex items-center gap-4 mb-4">
+          <div className={`p-2 rounded-xl bg-gradient-to-br ${feature.gradient}`}>
+            <feature.icon className="w-6 h-6 text-white" />
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium bg-white/10 rounded-full px-3 py-1">
-              {feature.category}
-            </span>
-          </div>
+          <h3 className="font-semibold text-lg text-white/90">{feature.title}</h3>
         </div>
-
-        <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+        
         <p className="text-white/60 mb-6">{feature.description}</p>
-
+        
         <ul className="space-y-2">
           {feature.benefits.map((benefit) => (
-            <li key={benefit} className="flex items-center gap-2 text-white/70">
-              <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+            <li key={benefit} className="flex items-center text-sm text-white/50">
+              <Check className="w-4 h-4 mr-2 text-emerald-400" />
               {benefit}
             </li>
           ))}
         </ul>
       </div>
     </div>
-  )
-})
+  );
+});
+
+const AgentCard = memo(function AgentCard({ feature }: { feature: Feature }) {
+  return (
+    <div className="group relative">
+      {/* Animated gradient border */}
+      <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-purple-500/50 opacity-0 blur-sm transition-all duration-500 group-hover:opacity-100" />
+      
+      <div className="relative rounded-2xl border border-white/10 bg-black p-8">
+        {/* Top section with agent icon and status */}
+        <div className="mb-6 flex justify-between items-start">
+          <div className={`relative h-16 w-16 rounded-2xl bg-gradient-to-br ${feature.gradient} p-[1px]`}>
+            <div className="absolute inset-0 rounded-2xl bg-black/50 blur-sm" />
+            <div className="relative h-full w-full rounded-2xl bg-black p-3">
+              <feature.icon className="h-full w-full text-white" />
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs text-emerald-400">Online</span>
+          </div>
+        </div>
+
+        {/* Agent name and description */}
+        <div className="mb-6">
+          <h3 className="mb-2 text-xl font-bold text-white">{feature.title}</h3>
+          <p className="text-white/60">{feature.description}</p>
+        </div>
+
+        {/* Capabilities section */}
+        <div className="space-y-4">
+          <div className="text-sm font-medium text-white/80">Capabilities</div>
+          <ul className="grid grid-cols-2 gap-3">
+            {feature.benefits.map((benefit) => (
+              <li 
+                key={benefit} 
+                className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/5 px-3 py-2 text-sm text-white/70"
+              >
+                <Check className="h-4 w-4 text-emerald-400" />
+                {benefit}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Interactive elements */}
+        <div className="mt-6 flex items-center justify-between">
+          <div className="text-sm text-white/40">
+            Response time: ~1s
+          </div>
+          <button className="rounded-lg bg-white/5 px-3 py-1 text-sm text-white/70 hover:bg-white/10 transition-colors">
+            Connect
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 // Static features data
 const features: Feature[] = [
@@ -196,33 +247,12 @@ export default function Features() {
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {features
                   .filter(feature => feature.category === key)
-                  .map((feature, index) => (
-                    <div
-                      key={feature.title}
-                      className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:bg-white/[0.04] transition-colors duration-300"
-                    >
-                      <div className={`absolute inset-0 rounded-2xl opacity-0 bg-gradient-to-br ${feature.gradient} transition-opacity duration-300 group-hover:opacity-5`} />
-                      
-                      <div className="relative">
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className={`p-2 rounded-xl bg-gradient-to-br ${feature.gradient}`}>
-                            <feature.icon className="w-6 h-6 text-white" />
-                          </div>
-                          <h3 className="font-semibold text-lg text-white/90">{feature.title}</h3>
-                        </div>
-                        
-                        <p className="text-white/60 mb-6">{feature.description}</p>
-                        
-                        <ul className="space-y-2">
-                          {feature.benefits.map((benefit) => (
-                            <li key={benefit} className="flex items-center text-sm text-white/50">
-                              <Check className="w-4 h-4 mr-2 text-emerald-400" />
-                              {benefit}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                  .map((feature) => (
+                    key === "AI Agents" ? (
+                      <AgentCard key={feature.title} feature={feature} />
+                    ) : (
+                      <SolutionCard key={feature.title} feature={feature} />
+                    )
                   ))}
               </div>
             </div>
