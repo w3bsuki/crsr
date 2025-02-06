@@ -153,9 +153,9 @@ function FeatureCard({ feature }: { feature: Feature }) {
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-r opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-70"
            style={{
              backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))`,
-             '--tw-gradient-from': feature.gradient.split(' ')[0].replace('from-', ''),
-             '--tw-gradient-to': feature.gradient.split(' ')[1].replace('to-', '')
-           }}
+             ['--tw-gradient-from' as string]: feature.gradient.split(' ')[0].replace('from-', ''),
+             ['--tw-gradient-to' as string]: feature.gradient.split(' ')[1].replace('to-', '')
+           } as React.CSSProperties}
       />
       <div className="relative h-[400px] rounded-3xl border border-white/[0.08] bg-white/[0.02] p-8 backdrop-blur-sm
                     transition-all duration-500 group-hover:bg-white/[0.05] group-hover:scale-[1.02]">
@@ -172,9 +172,9 @@ function FeatureCard({ feature }: { feature: Feature }) {
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br opacity-20 group-hover:opacity-30 transition-opacity duration-500"
                  style={{
                    backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))`,
-                   '--tw-gradient-from': feature.gradient.split(' ')[0].replace('from-', ''),
-                   '--tw-gradient-to': feature.gradient.split(' ')[1].replace('to-', '')
-                 }}
+                   ['--tw-gradient-from' as string]: feature.gradient.split(' ')[0].replace('from-', ''),
+                   ['--tw-gradient-to' as string]: feature.gradient.split(' ')[1].replace('to-', '')
+                 } as React.CSSProperties}
             />
             <div className="absolute inset-0 rounded-xl border border-white/[0.08] overflow-hidden">
               <FeatureCanvas 
