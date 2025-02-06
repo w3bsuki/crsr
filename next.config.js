@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const webpack = require('webpack');
-const path = require('path');
 
 const nextConfig = {
-  transpilePackages: ['three'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -32,13 +30,6 @@ const nextConfig = {
         }),
       )
     }
-
-    // Add support for importing Three.js examples
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      'three': path.resolve('./node_modules/three'),
-    }
-
     return config
   },
 }

@@ -177,10 +177,25 @@ function FeatureCard({ feature }: { feature: Feature }) {
                  } as React.CSSProperties}
             />
             <div className="absolute inset-0 rounded-xl border border-white/[0.08] overflow-hidden">
-              <FeatureCanvas 
-                type={feature.type}
-                color={feature.gradient.split(' ')[1].replace('to-', '#')}
-              />
+              <div className="w-full h-full flex items-center justify-center">
+                <motion.div
+                  className="w-24 h-24 rounded-xl bg-gradient-to-br"
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))`,
+                    ['--tw-gradient-from' as string]: feature.gradient.split(' ')[0].replace('from-', ''),
+                    ['--tw-gradient-to' as string]: feature.gradient.split(' ')[1].replace('to-', '')
+                  } as React.CSSProperties}
+                  animate={{
+                    rotate: [0, 360],
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
