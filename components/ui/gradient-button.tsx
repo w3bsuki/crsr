@@ -1,46 +1,43 @@
 "use client"
 
-import { motion, HTMLMotionProps } from "framer-motion"
+import { memo } from "react"
 import { cn } from "@/lib/utils"
 
-interface GradientButtonProps extends Omit<HTMLMotionProps<"button">, "className" | "children" | "variant"> {
-  className?: string
+interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary"
   children: React.ReactNode
 }
 
-export function GradientButton({ 
+export const GradientButton = memo(function GradientButton({ 
   className, 
   variant = "primary",
   children,
   ...props 
 }: GradientButtonProps) {
   return (
-    <motion.button
+    <button
       className={cn(
-        "relative group px-6 py-3 rounded-lg font-medium",
-        "before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r",
+        "relative group overflow-hidden",
+        "px-6 py-3 rounded-lg font-medium",
+        "transform transition-all duration-200",
+        "active:scale-95",
+        "disabled:opacity-50 disabled:pointer-events-none",
+        "before:absolute before:inset-0",
+        "before:rounded-lg",
+        "before:transition-opacity before:duration-200",
         variant === "primary" 
-          ? "before:from-indigo-500 before:to-rose-500 text-white"
-          : "before:from-white/10 before:to-white/5 text-white/90",
-        "after:absolute after:inset-[1px] after:rounded-[6px] after:bg-black",
-        "hover:before:opacity-90 transition-all duration-300",
+          ? "before:bg-gradient-to-r before:from-indigo-500 before:to-rose-500 text-white"
+          : "before:bg-gradient-to-r before:from-white/10 before:to-white/5 text-white/90",
+        "after:absolute after:inset-[1px]",
+        "after:rounded-[6px]",
+        "after:bg-black",
+        "after:transition-opacity after:duration-200",
+        "hover:before:opacity-90",
         className
       )}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
       {...props}
     >
       <span className="relative z-10">{children}</span>
-      <motion.div
-        className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background: "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)"
-        }}
-        initial={false}
-        animate={{ scale: [0.9, 1.1, 1] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
-      />
-    </motion.button>
+    </button>
   )
-} 
+}) 
