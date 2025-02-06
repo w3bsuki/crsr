@@ -7,8 +7,19 @@ import dynamic from 'next/dynamic'
 import { MobileNav } from "@/components/ui/mobile-nav"
 
 const Connect = dynamic(() => import('@/components/Connect').then(mod => mod.Connect), { ssr: false })
-const HeroGeometric = dynamic(() => import('@/components/ui/shape-landing-hero').then(mod => mod.HeroGeometric), { ssr: false })
+const HeroGeometric = dynamic(() => import('@/components/ui/shape-landing-hero').then(mod => mod.HeroGeometric), { 
+  ssr: false,
+  loading: () => <LoadingFallback height="100vh" />
+})
 const Features = dynamic(() => import('@/components/Features').then(mod => mod.default), { 
+  ssr: false,
+  loading: () => <LoadingFallback />
+})
+const Solutions = dynamic(() => import('@/components/Solutions').then(mod => mod.default), {
+  ssr: false,
+  loading: () => <LoadingFallback />
+})
+const WhyChooseUs = dynamic(() => import('@/components/WhyChooseUs').then(mod => mod.default), {
   ssr: false,
   loading: () => <LoadingFallback />
 })
@@ -25,8 +36,8 @@ const Testimonials = dynamic(() => import('@/components/Testimonials').then(mod 
   loading: () => <LoadingFallback />
 })
 
-const LoadingFallback = () => (
-  <div className="w-full h-[600px] flex items-center justify-center">
+const LoadingFallback = ({ height = "600px" }: { height?: string }) => (
+  <div className={`w-full flex items-center justify-center`} style={{ height }}>
     <div className="animate-pulse text-white/50">Loading...</div>
   </div>
 );
@@ -86,10 +97,10 @@ export default function Home() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex flex-1 justify-center">
               <div className="flex items-center justify-center gap-16">
-                {["AGENTS", "SOLUTIONS", "ABOUT"].map((item) => (
+                {["SOLUTIONS", "USE CASES", "ABOUT"].map((item) => (
                   <Link 
                     key={item} 
-                    href={`/${item.toLowerCase()}`} 
+                    href={`/${item.toLowerCase().replace(" ", "-")}`} 
                     className="text-[13px] text-white hover:opacity-80 transition-opacity tracking-[0.2em] font-medium"
                   >
                     {item}
@@ -113,7 +124,7 @@ export default function Home() {
                   className="h-9 px-4 gap-2.5 text-[13px] bg-transparent border-white/[0.15] text-white hover:bg-white hover:text-black transition-all tracking-[0.2em] font-medium"
                 >
                   <Apple className="w-[15px] h-[15px]" />
-                  DOWNLOAD
+                  GET STARTED
                 </Button>
               </div>
 
@@ -127,13 +138,17 @@ export default function Home() {
       <main className="flex-1">
         <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <HeroGeometric 
-            badge="AI Agent SDK"
-            title1="One Solution,"
-            title2="Our AI"
+            badge="AI Agency"
+            title1="Transform Your Business"
+            title2="With AI Innovation"
           />
         </div>
 
         <Features />
+
+        <Solutions />
+
+        <WhyChooseUs />
 
         <UseCases />
 
@@ -148,12 +163,12 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-white font-semibold mb-4">Product</h3>
+              <h3 className="text-white font-semibold mb-4">Solutions</h3>
               <ul className="space-y-2">
-                <li><Link href="#" className="hover:text-white transition-colors">Features</Link></li>
-                <li><Link href="#" className="hover:text-white transition-colors">Solutions</Link></li>
-                <li><Link href="#" className="hover:text-white transition-colors">Integrations</Link></li>
-                <li><Link href="#" className="hover:text-white transition-colors">Enterprise</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">AI Development</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">Machine Learning</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">Neural Networks</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">Enterprise AI</Link></li>
               </ul>
             </div>
             <div>
@@ -161,17 +176,17 @@ export default function Home() {
               <ul className="space-y-2">
                 <li><Link href="#" className="hover:text-white transition-colors">Documentation</Link></li>
                 <li><Link href="#" className="hover:text-white transition-colors">API Reference</Link></li>
-                <li><Link href="#" className="hover:text-white transition-colors">Guides</Link></li>
-                <li><Link href="#" className="hover:text-white transition-colors">Examples</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">Case Studies</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="text-white font-semibold mb-4">Company</h3>
               <ul className="space-y-2">
                 <li><Link href="#" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
                 <li><Link href="#" className="hover:text-white transition-colors">Careers</Link></li>
                 <li><Link href="#" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link href="#" className="hover:text-white transition-colors">Partners</Link></li>
               </ul>
             </div>
             <div>
@@ -185,7 +200,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-16 pt-8 border-t border-white/10 text-center text-sm">
-            <p>&copy; 2024 Your Company. All rights reserved.</p>
+            <p>&copy; 2024 TAI. All rights reserved.</p>
           </div>
         </div>
       </footer>
