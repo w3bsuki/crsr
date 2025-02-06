@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { GradientButton } from "./gradient-button";
 
 interface HeroGeometricProps {
@@ -9,72 +8,18 @@ interface HeroGeometricProps {
     title2: string;
 }
 
-function MobileHero({ badge, title1, title2 }: HeroGeometricProps) {
-    return (
-        <div className="w-full max-w-[1400px] mx-auto px-4 py-12">
-            <div className="text-center">
-                <div className="mx-auto mb-4 h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500 to-rose-500" />
-                <div className="inline-block mb-4 text-xs font-medium tracking-wider uppercase bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent">
-                    {badge}
-                </div>
-                <h1 className="text-4xl font-bold tracking-tight mb-6">
-                    <span className="block mb-2">{title1}</span>
-                    <span className="block bg-gradient-to-r from-indigo-500 via-rose-400 to-indigo-500 bg-clip-text text-transparent">
-                        {title2}
-                    </span>
-                </h1>
-                <div className="mx-auto max-w-[800px] mb-8">
-                    <p className="text-base text-white/70 px-4">
-                        Experience the next generation of AI-powered solutions. Our platform combines cutting-edge technology with intuitive design to deliver unprecedented results.
-                    </p>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <GradientButton className="w-full">Get Started</GradientButton>
-                    <GradientButton variant="secondary" className="w-full">Learn More</GradientButton>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-export function ClientHero(props: HeroGeometricProps) {
-    const [isMobile, setIsMobile] = useState(true);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-        
-        checkMobile();
-        
-        let timeoutId: NodeJS.Timeout;
-        const handleResize = () => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(checkMobile, 100);
-        };
-        
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            clearTimeout(timeoutId);
-        };
-    }, []);
-
-    if (isMobile) {
-        return <MobileHero {...props} />;
-    }
-
+export function ClientHero({ badge, title1, title2 }: HeroGeometricProps) {
     return (
         <div className="w-full max-w-[1400px] mx-auto px-4 py-16">
             <div className="text-center">
                 <div className="mx-auto mb-6 h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-rose-500" />
                 <span className="inline-block mb-6 text-sm font-medium tracking-wider uppercase bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent">
-                    {props.badge}
+                    {badge}
                 </span>
                 <h1 className="text-5xl font-bold tracking-tight mb-6">
-                    <span className="block">{props.title1}</span>
+                    <span className="block">{title1}</span>
                     <span className="block bg-gradient-to-r from-indigo-500 via-rose-400 to-indigo-500 bg-clip-text text-transparent">
-                        {props.title2}
+                        {title2}
                     </span>
                 </h1>
                 <div className="mx-auto max-w-[800px] mb-8">
