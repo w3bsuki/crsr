@@ -1,12 +1,12 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { ButtonHTMLAttributes } from "react"
 
-interface GradientButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface GradientButtonProps extends Omit<HTMLMotionProps<"button">, "className" | "children" | "variant"> {
   className?: string
   variant?: "primary" | "secondary"
+  children: React.ReactNode
 }
 
 export function GradientButton({ 
@@ -39,7 +39,7 @@ export function GradientButton({
         }}
         initial={false}
         animate={{ scale: [0.9, 1.1, 1] }}
-        transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY }}
+        transition={{ duration: 0.8, repeat: Infinity }}
       />
     </motion.button>
   )
