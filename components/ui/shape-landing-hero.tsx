@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, animate, useMotionTemplate, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
 import { Circle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -178,13 +178,7 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
                     <div 
                         className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         style={{
-                            background: useMotionTemplate`
-                                radial-gradient(
-                                    800px circle at ${mouseX}px ${mouseY}px,
-                                    rgba(79,70,229,0.15),
-                                    transparent 80%
-                                )
-                            `,
+                            background: useMotionTemplate`radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(79,70,229,0.15), transparent 80%)` as unknown as string
                         }}
                     />
                     <p className="text-lg md:text-xl text-white/70">
