@@ -1,6 +1,6 @@
 "use client"
 
-import { memo } from "react"
+import { memo, useEffect, useState } from "react"
 import { 
   Cpu,
   Zap,
@@ -16,9 +16,13 @@ import {
   Database,
   Bot,
   MessageSquare,
-  Check
+  Check,
+  ArrowRight,
+  ChevronRight
 } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { GradientButton } from "./ui/gradient-button"
+import Image from "next/image"
 
 // Define feature type
 interface Feature {
@@ -30,47 +34,84 @@ interface Feature {
   category: "Performance" | "Security" | "Intelligence" | "Enterprise Solutions" | "AI Agents";
 }
 
-// Memoized card component for better performance
 const SolutionCard = memo(function SolutionCard({ feature }: { feature: Feature }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:bg-white/[0.04] transition-colors duration-300">
-      <div className={`absolute inset-0 rounded-2xl opacity-0 bg-gradient-to-br ${feature.gradient} transition-opacity duration-300 group-hover:opacity-5`} />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group relative rounded-2xl border border-white/10 bg-black p-6 hover:border-purple-500/50 transition-colors duration-300"
+    >
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
       <div className="relative">
-        <div className="flex items-center gap-4 mb-4">
-          <div className={`p-2 rounded-xl bg-gradient-to-br ${feature.gradient}`}>
+        {/* Icon with animated gradient background */}
+        <div className="mb-6 relative">
+          <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${feature.gradient} blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-300`} />
+          <div className="relative z-10 w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10">
             <feature.icon className="w-6 h-6 text-white" />
           </div>
-          <h3 className="font-semibold text-lg text-white/90">{feature.title}</h3>
         </div>
         
-        <p className="text-white/60 mb-6">{feature.description}</p>
+        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
+          {feature.title}
+        </h3>
         
-        <ul className="space-y-2">
+        <p className="text-white/60 mb-6 line-clamp-2">
+          {feature.description}
+        </p>
+        
+        <div className="space-y-3">
           {feature.benefits.map((benefit) => (
-            <li key={benefit} className="flex items-center text-sm text-white/50">
-              <Check className="w-4 h-4 mr-2 text-emerald-400" />
-              {benefit}
-            </li>
+            <motion.div
+              key={benefit}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center gap-2"
+            >
+              <div className="w-5 h-5 rounded-full bg-purple-500/10 flex items-center justify-center">
+                <Check className="w-3 h-3 text-purple-400" />
+              </div>
+              <span className="text-sm text-white/70">{benefit}</span>
+            </motion.div>
           ))}
-        </ul>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-white/5">
+          <button className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
+            Learn more
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 });
 
 const AgentCard = memo(function AgentCard({ feature }: { feature: Feature }) {
   return (
-    <div className="group relative">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="group relative"
+    >
       {/* Animated gradient border */}
       <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-purple-500/50 opacity-0 blur-sm transition-all duration-500 group-hover:opacity-100" />
       
       <div className="relative rounded-2xl border border-white/10 bg-black p-8">
         {/* Top section with agent icon and status */}
         <div className="mb-6 flex justify-between items-start">
-          <div className={`relative h-16 w-16 rounded-2xl bg-gradient-to-br ${feature.gradient} p-[1px]`}>
-            <div className="absolute inset-0 rounded-2xl bg-black/50 blur-sm" />
-            <div className="relative h-full w-full rounded-2xl bg-black p-3">
+          <div className="relative">
+            <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.gradient} blur-xl opacity-20`} />
+            <div className="relative z-10 h-16 w-16 rounded-2xl bg-black border border-white/10 p-4">
               <feature.icon className="h-full w-full text-white" />
             </div>
           </div>
@@ -83,37 +124,48 @@ const AgentCard = memo(function AgentCard({ feature }: { feature: Feature }) {
 
         {/* Agent name and description */}
         <div className="mb-6">
-          <h3 className="mb-2 text-xl font-bold text-white">{feature.title}</h3>
+          <h3 className="mb-2 text-xl font-bold text-white group-hover:text-purple-400 transition-colors">
+            {feature.title}
+          </h3>
           <p className="text-white/60">{feature.description}</p>
         </div>
 
         {/* Capabilities section */}
         <div className="space-y-4">
           <div className="text-sm font-medium text-white/80">Capabilities</div>
-          <ul className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {feature.benefits.map((benefit) => (
-              <li 
-                key={benefit} 
-                className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/5 px-3 py-2 text-sm text-white/70"
+              <motion.div
+                key={benefit}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="relative group/item"
               >
-                <Check className="h-4 w-4 text-emerald-400" />
-                {benefit}
-              </li>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
+                <div className="relative rounded-lg border border-white/5 bg-white/5 px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-400" />
+                    <span className="text-sm text-white/70">{benefit}</span>
+                  </div>
+                </div>
+              </motion.div>
             ))}
-          </ul>
+          </div>
         </div>
 
         {/* Interactive elements */}
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
           <div className="text-sm text-white/40">
             Response time: ~1s
           </div>
-          <button className="rounded-lg bg-white/5 px-3 py-1 text-sm text-white/70 hover:bg-white/10 transition-colors">
+          <button className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
             Connect
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 });
 
@@ -213,63 +265,102 @@ const categories = {
 }
 
 export default function Features() {
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+
   return (
     <section className="relative py-32 overflow-hidden">
-      {/* Background with improved gradient */}
+      {/* Animated background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-slate-900 to-black" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
       
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div style={{ y }} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center justify-center p-2 rounded-2xl bg-white/5 backdrop-blur-sm mb-8 border border-white/10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center justify-center p-2 rounded-2xl bg-white/5 backdrop-blur-sm mb-8 border border-white/10"
+          >
             <Sparkles className="w-6 h-6 text-purple-400 mr-2" />
             <span className="text-white/80">Enterprise AI Solutions</span>
-          </div>
+          </motion.div>
           
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent"
+          >
             Transform Your Business with AI
-          </h2>
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-white/60 max-w-2xl mx-auto"
+          >
             Leverage our advanced AI agents and enterprise solutions to automate processes, optimize operations, and drive business growth.
-          </p>
+          </motion.p>
         </div>
 
         {/* Categories with improved spacing and animations */}
-        <div className="grid gap-16 mb-24">
-          {Object.entries(categories).map(([key, category]) => (
-            <div key={key} className="space-y-8">
-              <div className="text-center">
+        <div className="grid gap-32 mb-24">
+          {Object.entries(categories).map(([key, category], index) => (
+            <div key={key} className="space-y-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
                 <h3 className={`inline-block text-2xl font-bold mb-4 bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent`}>
                   {category.title}
                 </h3>
                 <p className="text-white/60">{category.description}</p>
-              </div>
+              </motion.div>
               
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {features
                   .filter(feature => feature.category === key)
-                  .map((feature) => (
-                    key === "AI Agents" ? (
-                      <AgentCard key={feature.title} feature={feature} />
-                    ) : (
-                      <SolutionCard key={feature.title} feature={feature} />
-                    )
+                  .map((feature, featureIndex) => (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: featureIndex * 0.1 }}
+                    >
+                      {key === "AI Agents" ? (
+                        <AgentCard feature={feature} />
+                      ) : (
+                        <SolutionCard feature={feature} />
+                      )}
+                    </motion.div>
                   ))}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
           <div className="inline-flex flex-col sm:flex-row gap-4 justify-center">
-            <GradientButton>
+            <GradientButton className="group">
               Schedule a Demo
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </GradientButton>
             <GradientButton variant="secondary">
               View Documentation
             </GradientButton>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
-  )
+  );
 } 
