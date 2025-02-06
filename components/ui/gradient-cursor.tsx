@@ -21,21 +21,14 @@ export function GradientCursor() {
   return (
     <motion.div
       className="fixed pointer-events-none z-[100] h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-3xl"
-      animate={{
+      style={{
         x,
         y,
-        background: [
-          "radial-gradient(circle, rgba(79,70,229,0.3) 0%, transparent 70%)",
-          "radial-gradient(circle, rgba(244,63,94,0.3) 0%, transparent 70%)",
-        ],
+        background: "radial-gradient(circle, rgba(79,70,229,0.3) 0%, transparent 70%)"
       }}
-      transition={{
-        background: {
-          repeat: Infinity,
-          duration: 4,
-          ease: "linear",
-        },
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
     />
   )
 } 
