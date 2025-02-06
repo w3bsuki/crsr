@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { ArrowRight, Bot, Brain, Building2, Chip, Code2, Workflow } from "lucide-react";
+import { ArrowRight, Bot, Brain, Building2, Code2, Workflow } from "lucide-react";
 import { GradientButton } from "./ui/gradient-button";
 
 interface UseCase {
