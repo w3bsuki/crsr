@@ -1,125 +1,157 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, MotionValue } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import { GradientButton } from "./gradient-button";
 import Link from "next/link";
 import dynamic from 'next/dynamic';
+import { ArrowRight, Bot, Brain, Sparkles } from "lucide-react";
 
-function ElegantShape({
-    className,
-    delay = 0,
-    width = 400,
-    height = 100,
-    rotate = 0,
-    gradient = "from-white/[0.08]",
-    isMobile = false,
-}: {
-    className?: string;
-    delay?: number;
-    width?: number;
-    height?: number;
-    rotate?: number;
-    gradient?: string;
-    isMobile?: boolean;
-}) {
-    // Reduce animation complexity on mobile
-    const animation = isMobile ? {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        transition: { duration: 1, delay }
-    } : {
-        initial: {
-            opacity: 0,
-            y: -150,
-            rotate: rotate - 15,
-        },
-        animate: {
-            opacity: 1,
-            y: 0,
-            rotate: rotate,
-        },
-        transition: {
-            duration: 2.4,
-            delay,
-            ease: [0.23, 0.86, 0.39, 0.96],
-            opacity: { duration: 1.2 },
-        }
-    };
-
-    return (
-        <motion.div
-            {...animation}
-            className={cn("absolute", className)}
-        >
-            <motion.div
-                animate={!isMobile ? {
-                    y: [0, 15, 0],
-                } : undefined}
-                transition={{
-                    duration: 12,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                }}
-                style={{
-                    width: isMobile ? width * 0.7 : width,
-                    height: isMobile ? height * 0.7 : height,
-                }}
-                className="relative"
-            >
-                <div
-                    className={cn(
-                        "absolute inset-0",
-                        "bg-gradient-to-r to-transparent",
-                        gradient,
-                        "backdrop-blur-[2px] border border-white/[0.15]",
-                        "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
-                        "after:absolute after:inset-0",
-                        "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]",
-                        "clip-path-hexagon transform-gpu",
-                        "before:absolute before:inset-[1px]",
-                        "before:bg-gradient-to-r before:from-transparent before:via-white/[0.05] before:to-transparent",
-                        "before:animate-pulse-slow"
-                    )}
-                />
-            </motion.div>
-        </motion.div>
-    );
-}
-
-// Import the client-side only component with no SSR
 const ClientHero = dynamic(() => import('./client-hero').then(mod => mod.ClientHero), {
   ssr: false,
-  loading: () => (
-    <div className="relative w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24">
-      <div className="relative z-10 text-center">
-        <div className="mx-auto mb-6 h-10 w-10 md:h-12 md:w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-rose-500" />
-        <div className="inline-block mb-4 md:mb-6 text-xs md:text-sm font-medium tracking-wider uppercase bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent">
-          Loading...
-        </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-[1.1] mb-6 opacity-50">
-          <span className="block">One Solution,</span>
-          <span className="block bg-gradient-to-r from-indigo-500 via-rose-400 to-indigo-500 bg-clip-text text-transparent">
-            Our AI
-          </span>
-        </h1>
-      </div>
-    </div>
-  )
+  loading: () => <HeroLoadingState />
 });
 
+const HeroLoadingState = () => (
+  <div className="relative w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24">
+    <div className="animate-pulse space-y-8">
+      <div className="h-4 bg-white/5 rounded w-24 mx-auto" />
+      <div className="h-12 bg-white/5 rounded w-96 mx-auto" />
+      <div className="h-4 bg-white/5 rounded w-64 mx-auto" />
+    </div>
+  </div>
+);
+
+const StatsItem = ({ label, value }: { label: string; value: string }) => (
+  <div className="text-center">
+    <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-2">
+      {value}
+    </div>
+    <div className="text-sm text-white/60">{label}</div>
+  </div>
+);
+
+const FeatureHighlight = ({ icon: Icon, text }: { icon: React.ElementType; text: string }) => (
+  <div className="flex items-center gap-2 text-white/70">
+    <Icon className="w-4 h-4 text-purple-400" />
+    <span className="text-sm">{text}</span>
+  </div>
+);
+
 interface HeroGeometricProps {
-    badge: string;
-    title1: string;
-    title2: string;
+  badge: string;
+  title1: string;
+  title2: string;
 }
 
-interface Transforms {
-    rotateX: MotionValue<number>;
-    rotateY: MotionValue<number>;
-}
+export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    const x = (clientX / innerWidth) * 2 - 1;
+    const y = (clientY / innerHeight) * 2 - 1;
+    setMousePosition({ x, y });
+  };
 
-export function HeroGeometric(props: HeroGeometricProps) {
-    return <ClientHero {...props} />;
+  return (
+    <section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/20 to-black" />
+      
+      {/* Floating elements */}
+      <motion.div
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: "radial-gradient(circle at center, rgba(124, 58, 237, 0.1) 0%, transparent 70%)",
+          transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
+        }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left column - Content */}
+          <div className="text-left space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
+            >
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
+                <Sparkles className="w-4 h-4 text-purple-400" />
+                <span className="text-sm text-purple-400 font-medium">Enterprise AI Platform</span>
+              </div>
+
+              {/* Main heading */}
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+                <span className="bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+                  {title1}{" "}
+                </span>
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  {title2}
+                </span>
+              </h1>
+
+              {/* Description */}
+              <p className="text-lg text-white/60 max-w-xl">
+                Transform your business with our enterprise AI platform. Automate processes, optimize operations, and drive growth with intelligent solutions.
+              </p>
+
+              {/* CTA buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <GradientButton className="group">
+                  Get Started
+                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                </GradientButton>
+                <Link href="/demo">
+                  <GradientButton variant="secondary">
+                    Schedule Demo
+                  </GradientButton>
+                </Link>
+              </div>
+
+              {/* Feature highlights */}
+              <div className="grid grid-cols-2 gap-4 pt-8">
+                <FeatureHighlight icon={Brain} text="Advanced AI Models" />
+                <FeatureHighlight icon={Bot} text="Intelligent Agents" />
+                <FeatureHighlight icon={Sparkles} text="Process Automation" />
+                <FeatureHighlight icon={ArrowRight} text="Quick Integration" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right column - 3D Visualization */}
+          <div className="relative lg:h-[600px]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="relative h-full"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-3xl" />
+              <div className="relative h-full rounded-3xl border border-white/10 bg-black/50 backdrop-blur-xl p-8">
+                {/* Add your 3D visualization or demo content here */}
+                <div className="h-full flex items-center justify-center">
+                  <div className="text-center space-y-8">
+                    <div className="grid grid-cols-2 gap-8">
+                      <StatsItem value="99.9%" label="Uptime" />
+                      <StatsItem value="500+" label="Enterprise Clients" />
+                      <StatsItem value="24/7" label="Support" />
+                      <StatsItem value="1B+" label="API Requests" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 } 
