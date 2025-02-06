@@ -95,13 +95,20 @@ interface HeroGeometricProps {
 
 export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
     const [isMobile, setIsMobile] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
     const springConfig = { stiffness: 125, damping: 25 };
-    const rotateX = useSpring(useTransform(mouseY, [0, window.innerHeight], [15, -15]), springConfig);
-    const rotateY = useSpring(useTransform(mouseX, [0, window.innerWidth], [-15, 15]), springConfig);
+    
+    // Initialize transforms after component mounts
+    const [transforms, setTransforms] = useState({ rotateX: 0, rotateY: 0 });
 
     useEffect(() => {
+        setMounted(true);
+        const rotateX = useSpring(useTransform(mouseY, [0, window.innerHeight], [15, -15]), springConfig);
+        const rotateY = useSpring(useTransform(mouseX, [0, window.innerWidth], [-15, 15]), springConfig);
+        setTransforms({ rotateX, rotateY });
+
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
@@ -110,7 +117,6 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
         window.addEventListener('resize', checkMobile);
         
         const handleMouseMove = (e: MouseEvent) => {
-            // Only track mouse movement on desktop
             if (!isMobile) {
                 mouseX.set(e.clientX);
                 mouseY.set(e.clientY);
@@ -122,7 +128,12 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener('resize', checkMobile);
         };
-    }, [isMobile, mouseX, mouseY]);
+    }, [mouseX, mouseY, springConfig]);
+
+    // Don't render until after mount
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <div className="relative w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24">
@@ -161,8 +172,8 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
                     style={{
                         perspective: "1000px",
                         transform: "perspective(1000px)",
-                        rotateX: !isMobile ? rotateX : 0,
-                        rotateY: !isMobile ? rotateY : 0
+                        rotateX: !isMobile ? transforms.rotateX : 0,
+                        rotateY: !isMobile ? transforms.rotateY : 0
                     }}
                 >
                     <motion.span
@@ -191,7 +202,7 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
                     <div 
                         className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         style={{
-                            background: !isMobile ? useMotionTemplate`radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(79,70,229,0.15), transparent 80%)` as unknown as string : undefined
+                            background: mounted && !isMobile ? useMotionTemplate`radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(79,70,229,0.15), transparent 80%)` as unknown as string : undefined
                         }}
                     />
                     <p className="text-base sm:text-lg md:text-xl text-white/70 px-4 md:px-0">
