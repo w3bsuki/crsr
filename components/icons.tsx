@@ -1,7 +1,7 @@
+import type { LucideIcon } from "lucide-react"
 import {
   Mail,
   MessageSquare,
-  type Icon as LucideIcon,
 } from "lucide-react"
 
 export type Icon = LucideIcon
