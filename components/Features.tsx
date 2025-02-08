@@ -21,250 +21,89 @@ import {
   ChevronRight,
   Fingerprint
 } from "lucide-react"
-import { motion, useScroll, useTransform, useMotionTemplate, MotionValue } from "framer-motion"
-import { GradientButton } from "./ui/gradient-button"
-import Image from "next/image"
+import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 
-// Define feature type
-interface Feature {
-  title: string;
-  description: string;
-  icon: React.ElementType;
-  gradient: string;
-  benefits: string[];
-  category: "Performance" | "Security" | "Intelligence" | "Enterprise Solutions" | "AI Agents";
-}
-
-const SolutionCard = memo(function SolutionCard({ feature }: { feature: Feature }) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative rounded-2xl border border-white/10 bg-black p-6 hover:border-purple-500/50 transition-colors duration-300"
-    >
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <div className="relative">
-        {/* Icon with animated gradient background */}
-        <div className="mb-6 relative">
-          <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${feature.gradient} blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-300`} />
-          <div className="relative z-10 w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10">
-            <feature.icon className="w-6 h-6 text-white" />
-          </div>
-        </div>
-        
-        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
-          {feature.title}
-        </h3>
-        
-        <p className="text-white/60 mb-6 line-clamp-2">
-          {feature.description}
-        </p>
-        
-        <div className="space-y-3">
-          {feature.benefits.map((benefit) => (
-            <motion.div
-              key={benefit}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-2"
-            >
-              <div className="w-5 h-5 rounded-full bg-purple-500/10 flex items-center justify-center">
-                <Check className="w-3 h-3 text-purple-400" />
-              </div>
-              <span className="text-sm text-white/70">{benefit}</span>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-6 pt-6 border-t border-white/5">
-          <button className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
-            Learn more
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-});
-
-const AgentCard = memo(function AgentCard({ feature }: { feature: Feature }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="group relative"
-    >
-      {/* Animated gradient border */}
-      <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-purple-500/50 opacity-0 blur-sm transition-all duration-500 group-hover:opacity-100" />
-      
-      <div className="relative rounded-2xl border border-white/10 bg-black p-8">
-        {/* Top section with agent icon and status */}
-        <div className="mb-6 flex justify-between items-start">
-          <div className="relative">
-            <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.gradient} blur-xl opacity-20`} />
-            <div className="relative z-10 h-16 w-16 rounded-2xl bg-black border border-white/10 p-4">
-              <feature.icon className="h-full w-full text-white" />
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-emerald-400">Online</span>
-          </div>
-        </div>
-
-        {/* Agent name and description */}
-        <div className="mb-6">
-          <h3 className="mb-2 text-xl font-bold text-white group-hover:text-purple-400 transition-colors">
-            {feature.title}
-          </h3>
-          <p className="text-white/60">{feature.description}</p>
-        </div>
-
-        {/* Capabilities section */}
-        <div className="space-y-4">
-          <div className="text-sm font-medium text-white/80">Capabilities</div>
-          <div className="grid grid-cols-2 gap-3">
-            {feature.benefits.map((benefit) => (
-              <motion.div
-                key={benefit}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="relative group/item"
-              >
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
-                <div className="relative rounded-lg border border-white/5 bg-white/5 px-3 py-2">
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-emerald-400" />
-                    <span className="text-sm text-white/70">{benefit}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Interactive elements */}
-        <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
-          <div className="text-sm text-white/40">
-            Response time: ~1s
-          </div>
-          <button className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
-            Connect
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-});
-
-// Static features data
-const features: Feature[] = [
+const features = [
   {
-    title: "Business Process Automation",
-    description: "End-to-end automation solutions for enterprise workflows and operations",
-    icon: Workflow,
+    title: "AI & Machine Learning",
+    description: "Advanced AI capabilities for enterprise solutions",
+    icon: Brain,
     gradient: "from-blue-500/10 to-cyan-500/10",
-    benefits: [
-      "Workflow Optimization",
-      "Document Processing",
-      "Data Entry Automation",
-      "Process Mining"
-    ],
-    category: "Enterprise Solutions"
+    features: [
+      {
+        name: "Neural Networks",
+        highlight: "Deep learning architecture",
+        description: "Build and train custom neural networks for complex tasks",
+        icon: Network
+      },
+      {
+        name: "Machine Learning",
+        highlight: "Automated learning systems",
+        description: "Implement ML models that improve over time",
+        icon: Brain
+      },
+      {
+        name: "Natural Language",
+        highlight: "Text understanding",
+        description: "Process and understand human language naturally",
+        icon: MessageSquare
+      }
+    ]
   },
   {
-    title: "Industry Solutions",
-    description: "Tailored AI solutions for specific industry verticals and use cases",
+    title: "Enterprise Solutions",
+    description: "Scalable solutions for business transformation",
     icon: Building2,
     gradient: "from-purple-500/10 to-pink-500/10",
-    benefits: [
-      "Manufacturing",
-      "Healthcare",
-      "Financial Services",
-      "Retail & E-commerce"
-    ],
-    category: "Enterprise Solutions"
+    features: [
+      {
+        name: "Process Automation",
+        highlight: "Workflow optimization",
+        description: "Automate repetitive tasks and business processes",
+        icon: Workflow
+      },
+      {
+        name: "Data Analytics",
+        highlight: "Business intelligence",
+        description: "Extract insights from your business data",
+        icon: BarChart
+      },
+      {
+        name: "Security & Compliance",
+        highlight: "Enterprise security",
+        description: "Ensure data protection and regulatory compliance",
+        icon: Lock
+      }
+    ]
   },
   {
-    title: "Data Operations",
-    description: "Streamline your data operations with AI-powered automation",
+    title: "Infrastructure & Deployment",
+    description: "Robust infrastructure for AI systems",
     icon: Database,
     gradient: "from-green-500/10 to-emerald-500/10",
-    benefits: [
-      "Data Labeling",
-      "Content Moderation",
-      "Document Processing",
-      "Quality Assurance"
-    ],
-    category: "Enterprise Solutions"
-  },
-  {
-    title: "Aidr - AI Manager",
-    description: "Your intelligent project manager and strategic advisor",
-    icon: Brain,
-    gradient: "from-amber-500/10 to-orange-500/10",
-    benefits: [
-      "Project Management",
-      "Resource Allocation",
-      "Strategic Planning",
-      "Performance Analytics"
-    ],
-    category: "AI Agents"
-  },
-  {
-    title: "Aido - Task Administrator",
-    description: "Efficient task execution and administrative support",
-    icon: Bot,
-    gradient: "from-red-500/10 to-rose-500/10",
-    benefits: [
-      "Task Automation",
-      "Process Coordination",
-      "System Administration",
-      "Workflow Optimization"
-    ],
-    category: "AI Agents"
-  },
-  {
-    title: "Aidy - Customer Support",
-    description: "24/7 intelligent customer support via voice and text",
-    icon: MessageSquare,
-    gradient: "from-indigo-500/10 to-violet-500/10",
-    benefits: [
-      "Voice Assistance",
-      "Text Support",
-      "Query Resolution",
-      "Customer Analytics"
-    ],
-    category: "AI Agents"
+    features: [
+      {
+        name: "Cloud Integration",
+        highlight: "Scalable deployment",
+        description: "Deploy AI solutions across cloud platforms",
+        icon: Layers
+      },
+      {
+        name: "Performance",
+        highlight: "Optimized systems",
+        description: "High-performance computing for AI workloads",
+        icon: Zap
+      },
+      {
+        name: "Monitoring",
+        highlight: "System oversight",
+        description: "Real-time monitoring and system health checks",
+        icon: LineChart
+      }
+    ]
   }
 ]
-
-const categories = {
-  "Enterprise Solutions": {
-    title: "Enterprise Solutions",
-    description: "Comprehensive AI solutions for business transformation",
-    gradient: "from-blue-400 to-cyan-400"
-  },
-  "AI Agents": {
-    title: "AI Agents",
-    description: "Intelligent agents for specialized business functions",
-    gradient: "from-purple-400 to-pink-400"
-  }
-}
 
 const BackgroundBeams = () => {
   return (
@@ -278,15 +117,15 @@ const BackgroundBeams = () => {
         className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent blur-3xl"
       />
     </div>
-  );
-};
+  )
+}
 
 const FeatureCard = memo(function FeatureCard({ 
   feature,
   index 
 }: { 
-  feature: typeof features[0]["features"][0];
-  index: number;
+  feature: typeof features[0]["features"][0]
+  index: number
 }) {
   return (
     <motion.div
@@ -316,15 +155,15 @@ const FeatureCard = memo(function FeatureCard({
         </p>
       </div>
     </motion.div>
-  );
-});
+  )
+})
 
 const CategorySection = memo(function CategorySection({
   category,
   index
 }: {
-  category: typeof features[0];
-  index: number;
+  category: typeof features[0]
+  index: number
 }) {
   return (
     <motion.div
@@ -360,12 +199,12 @@ const CategorySection = memo(function CategorySection({
         ))}
       </div>
     </motion.div>
-  );
-});
+  )
+})
 
 export default function Features() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const { scrollYProgress } = useScroll()
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50])
 
   return (
     <section className="relative py-32 overflow-hidden">
@@ -406,7 +245,7 @@ export default function Features() {
             viewport={{ once: true }}
             className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto mb-8"
           >
-            Explore our comprehensive suite of AI agents and enterprise solutions designed to transform your business operations.
+            Explore our comprehensive suite of AI features designed to transform your business operations.
           </motion.p>
         </div>
 
@@ -440,5 +279,5 @@ export default function Features() {
         </motion.div>
       </motion.div>
     </section>
-  );
+  )
 } 
