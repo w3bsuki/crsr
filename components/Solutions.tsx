@@ -15,7 +15,7 @@ import {
   Workflow,
   Boxes
 } from "lucide-react";
-import { motion, useScroll, useTransform, useMotionTemplate, MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionTemplate, MotionValue, useMotionValue } from "framer-motion";
 import { GradientButton } from "./ui/gradient-button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
