@@ -19,10 +19,12 @@ import {
   Check,
   ArrowRight,
   ChevronRight,
-  Fingerprint
+  Fingerprint,
+  Globe
 } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
+import { cn } from "@/lib/utils"
 
 const features = [
   {
@@ -30,6 +32,8 @@ const features = [
     description: "Advanced AI capabilities for enterprise solutions",
     icon: Brain,
     gradient: "from-blue-500/10 to-cyan-500/10",
+    borderGradient: "from-blue-500/20 to-cyan-500/20",
+    iconGradient: "from-blue-500 to-cyan-500",
     features: [
       {
         name: "Neural Networks",
@@ -49,6 +53,11 @@ const features = [
         description: "Process and understand human language naturally",
         icon: MessageSquare
       }
+    ],
+    stats: [
+      { label: "Accuracy", value: "99.9%" },
+      { label: "Processing Time", value: "-80%" },
+      { label: "Model Size", value: "500MB" }
     ]
   },
   {
@@ -56,6 +65,8 @@ const features = [
     description: "Scalable solutions for business transformation",
     icon: Building2,
     gradient: "from-purple-500/10 to-pink-500/10",
+    borderGradient: "from-purple-500/20 to-pink-500/20",
+    iconGradient: "from-purple-500 to-pink-500",
     features: [
       {
         name: "Process Automation",
@@ -75,6 +86,11 @@ const features = [
         description: "Ensure data protection and regulatory compliance",
         icon: Lock
       }
+    ],
+    stats: [
+      { label: "Efficiency", value: "+60%" },
+      { label: "Cost Savings", value: "40%" },
+      { label: "ROI", value: "3.5x" }
     ]
   },
   {
@@ -82,6 +98,8 @@ const features = [
     description: "Robust infrastructure for AI systems",
     icon: Database,
     gradient: "from-green-500/10 to-emerald-500/10",
+    borderGradient: "from-green-500/20 to-emerald-500/20",
+    iconGradient: "from-green-500 to-emerald-500",
     features: [
       {
         name: "Cloud Integration",
@@ -101,6 +119,11 @@ const features = [
         description: "Real-time monitoring and system health checks",
         icon: LineChart
       }
+    ],
+    stats: [
+      { label: "Uptime", value: "99.99%" },
+      { label: "Scale", value: "Global" },
+      { label: "Response", value: "<50ms" }
     ]
   }
 ]
@@ -120,11 +143,38 @@ const BackgroundBeams = () => {
   )
 }
 
+const StatCard = memo(function StatCard({ 
+  stat,
+  gradient
+}: { 
+  stat: { label: string; value: string }
+  gradient: string
+}) {
+  return (
+    <div className="relative group">
+      <div className={cn(
+        "absolute -inset-px rounded-lg bg-gradient-to-br opacity-20 blur-sm transition-opacity duration-300 group-hover:opacity-40",
+        gradient
+      )} />
+      <div className="relative rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm p-4">
+        <div className="text-xl font-bold bg-gradient-to-br from-white to-white/80 bg-clip-text text-transparent mb-1">
+          {stat.value}
+        </div>
+        <div className="text-sm text-white/40">
+          {stat.label}
+        </div>
+      </div>
+    </div>
+  )
+})
+
 const FeatureCard = memo(function FeatureCard({ 
   feature,
+  gradient,
   index 
 }: { 
   feature: typeof features[0]["features"][0]
+  gradient: string
   index: number
 }) {
   return (
@@ -135,11 +185,17 @@ const FeatureCard = memo(function FeatureCard({
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group relative"
     >
-      <div className="absolute -inset-px rounded-xl bg-gradient-to-r from-violet-500/30 to-purple-500/30 opacity-0 blur transition-opacity duration-300 group-hover:opacity-100" />
+      <div className={cn(
+        "absolute -inset-px rounded-xl bg-gradient-to-br opacity-0 blur transition-opacity duration-300 group-hover:opacity-100",
+        gradient
+      )} />
       <div className="relative rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm p-6">
         <div className="flex items-center gap-4 mb-4">
-          <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500/20 to-purple-500/20">
-            <feature.icon className="h-6 w-6 text-purple-400" />
+          <div className={cn(
+            "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br",
+            gradient
+          )}>
+            <feature.icon className="h-6 w-6 text-white" />
           </div>
           <div>
             <h3 className="font-semibold text-white group-hover:text-purple-400 transition-colors">
@@ -173,30 +229,54 @@ const CategorySection = memo(function CategorySection({
       transition={{ duration: 0.5, delay: index * 0.2 }}
       className="relative"
     >
-      <div className="mb-12">
-        <div className="flex items-center gap-4 mb-4">
-          <div className={`relative flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${category.gradient}`}>
-            <category.icon className="h-7 w-7 text-white" />
+      {/* Category Card */}
+      <div className="relative mb-16">
+        <div className={cn(
+          "absolute -inset-px rounded-2xl bg-gradient-to-br opacity-20 blur-sm",
+          category.borderGradient
+        )} />
+        <div className="relative rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-8">
+          {/* Header */}
+          <div className="flex items-center gap-6 mb-8">
+            <div className={cn(
+              "relative flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
+              category.iconGradient
+            )}>
+              <category.icon className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-2">
+                {category.title}
+              </h2>
+              <p className="text-white/60 max-w-xl">
+                {category.description}
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-white">
-              {category.title}
-            </h2>
-            <p className="text-white/60">
-              {category.description}
-            </p>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-3 gap-4 mb-8">
+            {category.stats.map((stat) => (
+              <StatCard
+                key={stat.label}
+                stat={stat}
+                gradient={category.iconGradient}
+              />
+            ))}
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {category.features.map((feature, featureIndex) => (
+              <FeatureCard
+                key={feature.name}
+                feature={feature}
+                gradient={category.iconGradient}
+                index={featureIndex}
+              />
+            ))}
           </div>
         </div>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {category.features.map((feature, featureIndex) => (
-          <FeatureCard
-            key={feature.name}
-            feature={feature}
-            index={featureIndex}
-          />
-        ))}
       </div>
     </motion.div>
   )
@@ -210,7 +290,7 @@ export default function Features() {
     <section className="relative py-32 overflow-hidden">
       <BackgroundBeams />
       
-      <motion.div style={{ y }} className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div style={{ y }} className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-20">
           <motion.div
@@ -247,6 +327,42 @@ export default function Features() {
           >
             Explore our comprehensive suite of AI features designed to transform your business operations.
           </motion.p>
+
+          {/* Quick Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-wrap justify-center gap-8 mt-12"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20">
+                <Globe className="h-6 w-6 text-purple-400" />
+              </div>
+              <div className="text-left">
+                <div className="text-2xl font-bold text-white">30+</div>
+                <div className="text-sm text-white/40">Countries Served</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20">
+                <Building2 className="h-6 w-6 text-purple-400" />
+              </div>
+              <div className="text-left">
+                <div className="text-2xl font-bold text-white">500+</div>
+                <div className="text-sm text-white/40">Enterprise Clients</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20">
+                <Brain className="h-6 w-6 text-purple-400" />
+              </div>
+              <div className="text-left">
+                <div className="text-2xl font-bold text-white">1B+</div>
+                <div className="text-sm text-white/40">AI Predictions</div>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Categories */}
