@@ -7,15 +7,19 @@ import dynamic from 'next/dynamic'
 import { MobileNav } from "@/components/ui/mobile-nav"
 
 const Connect = dynamic(() => import('@/components/Connect').then(mod => mod.Connect), { ssr: false })
-const HeroGeometric = dynamic(() => import('@/components/ui/shape-landing-hero').then(mod => mod.HeroGeometric), { 
+const Hero = dynamic(() => import('@/components/ui/hero-section').then(mod => mod.Hero), { 
   ssr: false,
   loading: () => <LoadingFallback height="100vh" />
 })
-const Features = dynamic(() => import('@/components/Features').then(mod => mod.default), { 
+const FeatureSections = dynamic(() => import('@/components/ui/feature-sections').then(mod => mod.FeatureSections), { 
   ssr: false,
   loading: () => <LoadingFallback />
 })
-const Solutions = dynamic(() => import('@/components/Solutions').then(mod => mod.default), {
+const AgentsSection = dynamic(() => import('@/components/ui/agents-section').then(mod => mod.AgentsSection), {
+  ssr: false,
+  loading: () => <LoadingFallback />
+})
+const SolutionsSection = dynamic(() => import('@/components/ui/SolutionsSection').then(mod => mod.default), {
   ssr: false,
   loading: () => <LoadingFallback />
 })
@@ -136,26 +140,14 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          <HeroGeometric 
-            badge="AI Agency"
-            title1="Transform Your Business"
-            title2="With AI Innovation"
-          />
-        </div>
-
-        <Features />
-
-        <Solutions />
-
+        <Hero />
+        <FeatureSections />
+        <AgentsSection />
+        <SolutionsSection />
         <WhyChooseUs />
-
         <UseCases />
-
         <Integrations />
-
         <Testimonials />
-
         <Connect />
       </main>
 

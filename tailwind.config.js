@@ -75,20 +75,15 @@ module.exports = {
         },
         marquee: {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-        'marquee-reverse': {
-          '0%': { transform: 'translateX(-50%)' },
-          '100%': { transform: 'translateX(0)' },
-        },
+          '100%': { transform: 'translateX(-33.33%)' }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         rainbow: "rainbow var(--speed, 2s) infinite linear",
         "pulse-slow": "pulse 8s infinite",
-        "marquee": "marquee var(--duration, 30s) linear infinite",
-        "marquee-reverse": "marquee-reverse var(--duration, 30s) linear infinite",
+        "marquee": "marquee 40s linear infinite",
       },
       clipPath: {
         hexagon: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",

@@ -15,42 +15,42 @@ interface HeroGeometricProps {
 const advantages = [
   {
     title: "Industry Leadership",
-    description: "Recognized as a leader in AI innovation",
+    description: "Recognized as a leader in AI innovation with multiple industry awards and accolades",
     icon: Award,
     gradient: "from-yellow-500/20 to-amber-500/20",
     iconGradient: "from-yellow-500 to-amber-500"
   },
   {
     title: "Rapid Deployment",
-    description: "Get your AI solutions up and running in days",
+    description: "Get your AI solutions up and running in days, not months, with our proven methodology",
     icon: Zap,
     gradient: "from-blue-500/20 to-cyan-500/20",
     iconGradient: "from-blue-500 to-cyan-500"
   },
   {
     title: "Expert Team",
-    description: "Work with world-class AI researchers",
+    description: "Work with world-class AI researchers and engineers with decades of combined experience",
     icon: Users,
     gradient: "from-purple-500/20 to-pink-500/20",
     iconGradient: "from-purple-500 to-pink-500"
   },
   {
     title: "24/7 Support",
-    description: "Round-the-clock monitoring and support",
+    description: "Round-the-clock monitoring and support to ensure your AI systems run smoothly",
     icon: Clock,
     gradient: "from-green-500/20 to-emerald-500/20",
     iconGradient: "from-green-500 to-emerald-500"
   },
   {
     title: "Enterprise Security",
-    description: "Bank-grade security measures",
+    description: "Bank-grade security measures and compliance with industry standards to protect your data",
     icon: Shield,
     gradient: "from-red-500/20 to-rose-500/20",
     iconGradient: "from-red-500 to-rose-500"
   },
   {
     title: "Global Presence",
-    description: "Supporting clients across 30+ countries",
+    description: "Supporting clients across 30+ countries with localized expertise and support",
     icon: Globe,
     gradient: "from-indigo-500/20 to-violet-500/20",
     iconGradient: "from-indigo-500 to-violet-500"
@@ -58,9 +58,21 @@ const advantages = [
 ];
 
 const stats = [
-  { value: "98%", label: "Client Satisfaction" },
-  { value: "500+", label: "Projects Delivered" },
-  { value: "30+", label: "Countries Served" }
+  { 
+    value: "98%", 
+    label: "Client Satisfaction",
+    description: "Average satisfaction score from enterprise clients"
+  },
+  { 
+    value: "500+", 
+    label: "Projects Delivered",
+    description: "Successfully completed AI implementations"
+  },
+  { 
+    value: "30+", 
+    label: "Countries Served",
+    description: "Global presence across major markets"
+  }
 ];
 
 const BackgroundBeams = () => {
@@ -97,19 +109,19 @@ const AdvantageCard = memo(function AdvantageCard({
         "absolute -inset-px rounded-2xl bg-gradient-to-br opacity-20 blur-sm transition-opacity duration-300 group-hover:opacity-40",
         advantage.gradient
       )} />
-      <div className="relative h-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-6">
-        <div className="flex items-center gap-4 mb-4">
+      <div className="relative h-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-8 flex flex-col">
+        <div className="flex items-start gap-4 mb-4">
           <div className={cn(
-            "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
+            "relative flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
             advantage.iconGradient
           )}>
-            <advantage.icon className="h-6 w-6 text-white" />
+            <advantage.icon className="h-7 w-7 text-white" />
           </div>
-          <div>
-            <h3 className="font-semibold text-white group-hover:text-purple-400 transition-colors">
+          <div className="flex-1 min-h-[80px] flex flex-col">
+            <h3 className="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
               {advantage.title}
             </h3>
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-white/40 mt-1 line-clamp-3">
               {advantage.description}
             </p>
           </div>
@@ -135,12 +147,15 @@ const StatCard = memo(function StatCard({
       className="relative group"
     >
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-purple-500/20 to-violet-500/20 opacity-20 blur-sm transition-opacity duration-300 group-hover:opacity-40" />
-      <div className="relative rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-8 text-center">
-        <div className="text-4xl font-bold bg-gradient-to-br from-white to-white/80 bg-clip-text text-transparent mb-2">
+      <div className="relative rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-8 text-center h-full">
+        <div className="text-5xl font-bold bg-gradient-to-br from-white to-white/80 bg-clip-text text-transparent mb-3">
           {stat.value}
         </div>
-        <div className="text-sm text-white/40">
+        <div className="text-base font-medium text-white/80 mb-2">
           {stat.label}
+        </div>
+        <div className="text-sm text-white/40">
+          {stat.description}
         </div>
       </div>
     </motion.div>
@@ -171,19 +186,19 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black py-20"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black py-24 sm:py-32"
     >
       <BackgroundBeams />
       
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Content */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-24 sm:mb-32">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-violet-500/20 border border-purple-500/20 backdrop-blur-sm mb-8"
+            className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-500/20 to-violet-500/20 border border-purple-500/20 backdrop-blur-sm mb-10"
           >
             <Award className="w-5 h-5 text-purple-400" />
             <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
@@ -221,19 +236,19 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20"
+            className="flex flex-col sm:flex-row items-center justify-center gap-6"
           >
             <Link href="/solutions">
               <div className="group relative">
                 <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-purple-500 to-violet-500 opacity-50 blur transition duration-1000 group-hover:opacity-75" />
-                <button className="relative flex items-center gap-2 rounded-lg bg-black px-8 py-4 text-base font-semibold text-white transition duration-200 hover:bg-neutral-950">
+                <button className="relative flex items-center gap-2.5 rounded-lg bg-black px-8 py-4 text-base font-semibold text-white transition duration-200 hover:bg-neutral-950">
                   Get Started
                   <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               </div>
             </Link>
             <Link href="/contact">
-              <button className="flex items-center gap-2 rounded-lg border border-white/10 px-8 py-4 text-base font-semibold text-white transition duration-200 hover:bg-white/5">
+              <button className="flex items-center gap-2.5 rounded-lg border border-white/10 px-8 py-4 text-base font-semibold text-white transition duration-200 hover:bg-white/5">
                 Schedule Demo
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -246,7 +261,7 @@ export function HeroGeometric({ badge, title1, title2 }: HeroGeometricProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-20"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-24 sm:mb-32"
         >
           {advantages.map((advantage, index) => (
             <AdvantageCard

@@ -1,30 +1,137 @@
 "use client"
 
 import * as React from "react"
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  useHover,
+  useFocus,
+  useDismiss,
+  useRole,
+  useInteractions,
+  FloatingPortal,
+  arrow,
+  useTransitionStyles,
+} from "@floating-ui/react"
 
 import { cn } from "@/lib/utils"
 
-const TooltipProvider = TooltipPrimitive.Provider
+interface TooltipProps {
+  content: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  align?: 'start' | 'center' | 'end';
+  sideOffset?: number;
+}
 
-const Tooltip = TooltipPrimitive.Root
+export function Tooltip({
+  children,
+  content,
+  className,
+  side = 'top',
+  align = 'center',
+  sideOffset = 4,
+}: TooltipProps) {
+  const arrowRef = React.useRef(null);
 
-const TooltipTrigger = TooltipPrimitive.Trigger
+  const {
+    x,
+    y,
+    strategy,
+    context,
+    placement,
+    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
+    refs,
+  } = useFloating({
+    placement: `${side}-${align}` as any,
+    middleware: [
+      offset(sideOffset),
+      flip(),
+      shift(),
+      arrow({ element: arrowRef }),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
 
-const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <TooltipPrimitive.Content
-    ref={ref}
-    sideOffset={sideOffset}
-    className={cn(
-      "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-      className
-    )}
-    {...props}
-  />
-))
-TooltipContent.displayName = TooltipPrimitive.Content.displayName
+  const hover = useHover(context, { move: false });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context, { role: 'tooltip' });
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ]);
+
+  const { isMounted, styles } = useTransitionStyles(context, {
+    initial: {
+      opacity: 0,
+      transform: 'scale(0.95)',
+    },
+    open: {
+      opacity: 1,
+      transform: 'scale(1)',
+    },
+    close: {
+      opacity: 0,
+      transform: 'scale(0.95)',
+    },
+  });
+
+  const staticSide = {
+    top: 'bottom',
+    right: 'left',
+    bottom: 'top',
+    left: 'right',
+  }[placement.split('-')[0]];
+
+  return (
+    <>
+      <div ref={refs.setReference} {...getReferenceProps()}>
+        {children}
+      </div>
+      {isMounted && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            className={cn(
+              'z-50 rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md',
+              className
+            )}
+            style={{
+              ...styles,
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+              width: 'max-content',
+            }}
+            {...getFloatingProps()}
+          >
+            {content}
+            <div
+              ref={arrowRef}
+              className="absolute h-2 w-2 rotate-45 bg-popover border"
+              style={{
+                left: arrowX != null ? `${arrowX}px` : '',
+                top: arrowY != null ? `${arrowY}px` : '',
+                right: '',
+                bottom: '',
+                [staticSide]: '-4px',
+                borderTop: staticSide === 'bottom' ? '' : '1px solid var(--border)',
+                borderLeft: staticSide === 'right' ? '' : '1px solid var(--border)',
+                borderBottom: staticSide === 'top' ? '' : '1px solid var(--border)',
+                borderRight: staticSide === 'left' ? '' : '1px solid var(--border)',
+              }}
+            />
+          </div>
+        </FloatingPortal>
+      )}
+    </>
+  );
+}

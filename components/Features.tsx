@@ -19,8 +19,7 @@ import {
   Check,
   ArrowRight,
   ChevronRight,
-  Fingerprint,
-  Globe
+  Fingerprint
 } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
@@ -38,20 +37,23 @@ const features = [
       {
         name: "Neural Networks",
         highlight: "Deep learning architecture",
-        description: "Build and train custom neural networks for complex tasks",
-        icon: Network
+        description: "Build and deploy custom neural networks for complex data processing and pattern recognition",
+        icon: Network,
+        gradient: "from-blue-500/10 to-cyan-500/10"
       },
       {
         name: "Machine Learning",
         highlight: "Automated learning systems",
-        description: "Implement ML models that improve over time",
-        icon: Brain
+        description: "Implement self-improving ML models that adapt and evolve with your business needs",
+        icon: Brain,
+        gradient: "from-blue-500/10 to-cyan-500/10"
       },
       {
         name: "Natural Language",
         highlight: "Text understanding",
-        description: "Process and understand human language naturally",
-        icon: MessageSquare
+        description: "Advanced NLP capabilities for human-like text comprehension and generation",
+        icon: MessageSquare,
+        gradient: "from-blue-500/10 to-cyan-500/10"
       }
     ],
     stats: [
@@ -71,20 +73,23 @@ const features = [
       {
         name: "Process Automation",
         highlight: "Workflow optimization",
-        description: "Automate repetitive tasks and business processes",
-        icon: Workflow
+        description: "End-to-end automation of complex business processes and workflows",
+        icon: Workflow,
+        gradient: "from-purple-500/10 to-pink-500/10"
       },
       {
         name: "Data Analytics",
         highlight: "Business intelligence",
-        description: "Extract insights from your business data",
-        icon: BarChart
+        description: "Real-time analytics and insights for data-driven decision making",
+        icon: BarChart,
+        gradient: "from-purple-500/10 to-pink-500/10"
       },
       {
         name: "Security & Compliance",
         highlight: "Enterprise security",
-        description: "Ensure data protection and regulatory compliance",
-        icon: Lock
+        description: "Bank-grade security with regulatory compliance built-in",
+        icon: Lock,
+        gradient: "from-purple-500/10 to-pink-500/10"
       }
     ],
     stats: [
@@ -104,20 +109,23 @@ const features = [
       {
         name: "Cloud Integration",
         highlight: "Scalable deployment",
-        description: "Deploy AI solutions across cloud platforms",
-        icon: Layers
+        description: "Seamless integration with major cloud providers and platforms",
+        icon: Layers,
+        gradient: "from-green-500/10 to-emerald-500/10"
       },
       {
         name: "Performance",
         highlight: "Optimized systems",
-        description: "High-performance computing for AI workloads",
-        icon: Zap
+        description: "High-performance computing optimized for AI workloads",
+        icon: Zap,
+        gradient: "from-green-500/10 to-emerald-500/10"
       },
       {
         name: "Monitoring",
         highlight: "System oversight",
-        description: "Real-time monitoring and system health checks",
-        icon: LineChart
+        description: "24/7 monitoring with predictive maintenance and alerts",
+        icon: LineChart,
+        gradient: "from-green-500/10 to-emerald-500/10"
       }
     ],
     stats: [
@@ -137,36 +145,11 @@ const BackgroundBeams = () => {
         initial={{ opacity: 0.5, scale: 1, x: -500, y: 0 }}
         animate={{ opacity: 1, scale: 1.25, x: 500, y: -100 }}
         transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent blur-3xl"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent blur-3xl"
       />
     </div>
   )
 }
-
-const StatCard = memo(function StatCard({ 
-  stat,
-  gradient
-}: { 
-  stat: { label: string; value: string }
-  gradient: string
-}) {
-  return (
-    <div className="relative group">
-      <div className={cn(
-        "absolute -inset-px rounded-lg bg-gradient-to-br opacity-20 blur-sm transition-opacity duration-300 group-hover:opacity-40",
-        gradient
-      )} />
-      <div className="relative rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm p-4">
-        <div className="text-xl font-bold bg-gradient-to-br from-white to-white/80 bg-clip-text text-transparent mb-1">
-          {stat.value}
-        </div>
-        <div className="text-sm text-white/40">
-          {stat.label}
-        </div>
-      </div>
-    </div>
-  )
-})
 
 const FeatureCard = memo(function FeatureCard({ 
   feature,
@@ -183,30 +166,30 @@ const FeatureCard = memo(function FeatureCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative"
+      className="group relative h-full"
     >
       <div className={cn(
-        "absolute -inset-px rounded-xl bg-gradient-to-br opacity-0 blur transition-opacity duration-300 group-hover:opacity-100",
+        "absolute -inset-px rounded-2xl bg-gradient-to-br opacity-0 blur-[2px] transition-all duration-500 group-hover:opacity-40",
         gradient
       )} />
-      <div className="relative rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm p-6">
-        <div className="flex items-center gap-4 mb-4">
+      <div className="relative h-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-8 flex flex-col">
+        <div className="flex items-start gap-4 mb-6">
           <div className={cn(
-            "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br",
+            "relative flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
             gradient
           )}>
-            <feature.icon className="h-6 w-6 text-white" />
+            <feature.icon className="h-7 w-7 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-white group-hover:text-purple-400 transition-colors">
+            <h3 className="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
               {feature.name}
             </h3>
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-white/40 mt-1">
               {feature.highlight}
             </p>
           </div>
         </div>
-        <p className="text-sm text-white/60 leading-relaxed">
+        <p className="text-sm text-white/60 leading-relaxed flex-grow">
           {feature.description}
         </p>
       </div>
@@ -232,36 +215,46 @@ const CategorySection = memo(function CategorySection({
       {/* Category Card */}
       <div className="relative mb-16">
         <div className={cn(
-          "absolute -inset-px rounded-2xl bg-gradient-to-br opacity-20 blur-sm",
+          "absolute -inset-px rounded-3xl bg-gradient-to-br opacity-20 blur-[2px]",
           category.borderGradient
         )} />
-        <div className="relative rounded-2xl border border-white/10 bg-black/50 backdrop-blur-sm p-8">
+        <div className="relative rounded-3xl border border-white/10 bg-black/50 backdrop-blur-sm p-10">
           {/* Header */}
-          <div className="flex items-center gap-6 mb-8">
+          <div className="flex items-start gap-6 mb-12">
             <div className={cn(
-              "relative flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
+              "relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br",
               category.iconGradient
             )}>
               <category.icon className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-white mb-2">
+              <h2 className="text-3xl font-bold text-white mb-3">
                 {category.title}
               </h2>
-              <p className="text-white/60 max-w-xl">
+              <p className="text-white/60 max-w-2xl text-lg">
                 {category.description}
               </p>
             </div>
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-3 gap-6 mb-12">
             {category.stats.map((stat) => (
-              <StatCard
+              <div 
                 key={stat.label}
-                stat={stat}
-                gradient={category.iconGradient}
-              />
+                className="relative group overflow-hidden rounded-2xl border border-white/10 bg-black/30 p-6 text-center"
+              >
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-10",
+                  category.iconGradient
+                )} />
+                <div className="text-3xl font-bold text-white mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-white/40">
+                  {stat.label}
+                </div>
+              </div>
             ))}
           </div>
 
@@ -290,16 +283,16 @@ export default function Features() {
     <section className="relative py-32 overflow-hidden">
       <BackgroundBeams />
       
-      <motion.div style={{ y }} className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div style={{ y }} className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-violet-500/20 border border-purple-500/20 backdrop-blur-sm mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-violet-500/10 border border-purple-500/10 backdrop-blur-sm mb-8"
           >
-            <Fingerprint className="w-4 h-4 text-purple-400" />
+            <Fingerprint className="w-5 h-5 text-purple-400" />
             <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
               AI-Powered Features
             </span>
@@ -323,46 +316,10 @@ export default function Features() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto mb-8"
+            className="text-lg text-white/60 max-w-2xl mx-auto"
           >
             Explore our comprehensive suite of AI features designed to transform your business operations.
           </motion.p>
-
-          {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center gap-8 mt-12"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20">
-                <Globe className="h-6 w-6 text-purple-400" />
-              </div>
-              <div className="text-left">
-                <div className="text-2xl font-bold text-white">30+</div>
-                <div className="text-sm text-white/40">Countries Served</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20">
-                <Building2 className="h-6 w-6 text-purple-400" />
-              </div>
-              <div className="text-left">
-                <div className="text-2xl font-bold text-white">500+</div>
-                <div className="text-sm text-white/40">Enterprise Clients</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20">
-                <Brain className="h-6 w-6 text-purple-400" />
-              </div>
-              <div className="text-left">
-                <div className="text-2xl font-bold text-white">1B+</div>
-                <div className="text-sm text-white/40">AI Predictions</div>
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         {/* Categories */}
@@ -385,10 +342,10 @@ export default function Features() {
         >
           <Link href="/solutions">
             <div className="group relative inline-flex">
-              <div className="absolute -inset-px rounded-lg bg-gradient-to-r from-purple-500 to-violet-500 opacity-50 blur transition duration-1000 group-hover:opacity-75" />
-              <button className="relative flex items-center gap-2 rounded-lg bg-black px-8 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-neutral-950">
+              <div className="absolute -inset-px rounded-lg bg-gradient-to-r from-purple-500 to-violet-500 opacity-50 blur-[2px] transition duration-1000 group-hover:opacity-75" />
+              <button className="relative flex items-center gap-2 rounded-lg bg-black px-8 py-4 text-base font-semibold text-white transition duration-200 hover:bg-neutral-950">
                 Explore All Features
-                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" />
               </button>
             </div>
           </Link>
