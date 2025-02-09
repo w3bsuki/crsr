@@ -129,16 +129,19 @@ export function Footerdemo() {
             <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <TooltipProvider key={social.name}>
-                  <Tooltip content={<p>Follow us on {social.name}</p>}>
-                    <TooltipTrigger>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
                       <Link 
                         href={social.href}
                         className={`p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors ${social.color}`}
                       >
                         <social.icon className="h-5 w-5" />
-                        <span className="sr-only">{social.name}</span>
+                        <span className="sr-only">Follow us on {social.name}</span>
                       </Link>
                     </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Follow us on {social.name}</p>
+                    </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               ))}
