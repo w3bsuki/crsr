@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
 import {
   useFloating,
   autoUpdate,
@@ -32,8 +33,15 @@ export function TooltipProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export function TooltipTrigger({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export function TooltipTrigger({ 
+  children, 
+  asChild 
+}: { 
+  children: React.ReactNode;
+  asChild?: boolean;
+}) {
+  const Comp = asChild ? Slot : "div";
+  return <Comp>{children}</Comp>;
 }
 
 export function TooltipContent({ children, className }: { children: React.ReactNode; className?: string }) {
