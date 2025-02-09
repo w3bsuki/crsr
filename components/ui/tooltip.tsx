@@ -28,6 +28,18 @@ interface TooltipProps {
   sideOffset?: number;
 }
 
+export function TooltipProvider({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
+
+export function TooltipTrigger({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
+
+export function TooltipContent({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("z-50 rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md", className)}>{children}</div>;
+}
+
 export function Tooltip({
   children,
   content,
