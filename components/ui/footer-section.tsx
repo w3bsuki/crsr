@@ -129,8 +129,8 @@ export function Footerdemo() {
             <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <TooltipProvider key={social.name}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
+                  <Tooltip content={<p>Follow us on {social.name}</p>}>
+                    <TooltipTrigger>
                       <Link 
                         href={social.href}
                         className={`p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors ${social.color}`}
@@ -139,9 +139,6 @@ export function Footerdemo() {
                         <span className="sr-only">{social.name}</span>
                       </Link>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Follow us on {social.name}</p>
-                    </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               ))}
