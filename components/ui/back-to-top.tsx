@@ -1,10 +1,11 @@
 "use client"
 
+import * as React from 'react';
 import { useEffect, useState, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { Button } from './button';
-import { Tooltip } from './tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
 
 const SCROLL_THRESHOLD = 300;
 
@@ -41,16 +42,23 @@ export const BackToTop = memo(function BackToTop() {
           exit={{ opacity: 0, scale: 0.5, y: 10 }}
           transition={{ duration: 0.2 }}
         >
-          <Tooltip content="Scroll to top" side="left">
-            <Button
-              onClick={scrollToTop}
-              size="icon"
-              className="h-10 w-10 rounded-full shadow-lg will-change-transform"
-            >
-              <ArrowUp className="h-5 w-5" />
-              <span className="sr-only">Scroll to top</span>
-            </Button>
-          </Tooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={scrollToTop}
+                  size="icon"
+                  className="h-10 w-10 rounded-full shadow-lg will-change-transform"
+                >
+                  <ArrowUp className="h-5 w-5" />
+                  <span className="sr-only">Scroll to top</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Scroll to top</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </motion.div>
       )}
     </AnimatePresence>
