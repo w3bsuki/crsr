@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactLenis } from '@studio-freight/react-lenis';
+import { ReactLenis } from 'lenis';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'react-hot-toast';
 
