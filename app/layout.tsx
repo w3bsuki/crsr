@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Footerdemo } from "@/components/ui/footer-section"
 import { Inter } from "next/font/google"
@@ -17,7 +17,11 @@ export const metadata: Metadata = {
   description: 'Experience the future of coding with Cursor, the AI-powered IDE that enhances your development workflow.',
   keywords: ['IDE', 'AI', 'Development', 'Coding', 'Programming'],
   authors: [{ name: 'Cursor Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' }
