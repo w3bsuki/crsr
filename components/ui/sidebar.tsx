@@ -579,14 +579,15 @@ const SidebarMenuButton = React.forwardRef<
 
     return (
       <TooltipProvider>
-        <Tooltip content={tooltip.children}>
+        <Tooltip>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
           <TooltipContent
             side="right"
             align="center"
             hidden={state !== "collapsed" || isMobile}
-            {...tooltip}
-          />
+          >
+            {tooltip.children}
+          </TooltipContent>
         </Tooltip>
       </TooltipProvider>
     )
