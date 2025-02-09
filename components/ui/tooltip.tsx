@@ -104,12 +104,25 @@ export function Tooltip({
     },
   });
 
-  const staticSide = {
-    top: 'bottom',
-    right: 'left',
-    bottom: 'top',
-    left: 'right',
-  }[placement.split('-')[0]];
+  const staticSide = placement.split('-')[0] as 'top' | 'right' | 'bottom' | 'left';
+  const arrowOffset = '-4px';
+
+  const arrowStyles: React.CSSProperties = {
+    left: arrowX != null ? `${arrowX}px` : '',
+    top: arrowY != null ? `${arrowY}px` : '',
+    right: '',
+    bottom: '',
+  };
+
+  if (staticSide === 'top') arrowStyles.bottom = arrowOffset;
+  if (staticSide === 'right') arrowStyles.left = arrowOffset;
+  if (staticSide === 'bottom') arrowStyles.top = arrowOffset;
+  if (staticSide === 'left') arrowStyles.right = arrowOffset;
+
+  arrowStyles.borderTop = staticSide === 'bottom' ? '' : '1px solid var(--border)';
+  arrowStyles.borderLeft = staticSide === 'right' ? '' : '1px solid var(--border)';
+  arrowStyles.borderBottom = staticSide === 'top' ? '' : '1px solid var(--border)';
+  arrowStyles.borderRight = staticSide === 'left' ? '' : '1px solid var(--border)';
 
   return (
     <>
@@ -137,17 +150,7 @@ export function Tooltip({
             <div
               ref={arrowRef}
               className="absolute h-2 w-2 rotate-45 bg-popover border"
-              style={{
-                left: arrowX != null ? `${arrowX}px` : '',
-                top: arrowY != null ? `${arrowY}px` : '',
-                right: '',
-                bottom: '',
-                [staticSide]: '-4px',
-                borderTop: staticSide === 'bottom' ? '' : '1px solid var(--border)',
-                borderLeft: staticSide === 'right' ? '' : '1px solid var(--border)',
-                borderBottom: staticSide === 'top' ? '' : '1px solid var(--border)',
-                borderRight: staticSide === 'left' ? '' : '1px solid var(--border)',
-              }}
+              style={arrowStyles}
             />
           </div>
         </FloatingPortal>
