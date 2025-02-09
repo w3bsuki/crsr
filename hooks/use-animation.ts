@@ -1,4 +1,4 @@
-import { useEffect, useRef, MutableRefObject } from 'react';
+import { useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 
@@ -23,11 +23,12 @@ export const useAnimation = (config: AnimationConfig = {}) => {
     stagger = 0.1,
   } = config;
 
-  const elementRef = useRef<HTMLElement | null>(null);
   const { ref: inViewRef, inView } = useInView({
     threshold: 0.2,
     triggerOnce: true,
   });
+
+  const elementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (inView && elementRef.current) {
@@ -46,9 +47,14 @@ export const useAnimation = (config: AnimationConfig = {}) => {
     }
   }, [inView, duration, delay, ease, stagger]);
 
+  // Callback ref that syncs both refs
   const setRefs = (element: HTMLElement | null) => {
+    // Update the elementRef
     elementRef.current = element;
-    inViewRef(element);
+    // Forward the ref to useInView
+    if (typeof inViewRef === 'function') {
+      inViewRef(element);
+    }
   };
 
   return {
