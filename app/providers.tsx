@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactLenis } from 'lenis';
+import { ReactLenis as ReactLenisType } from '@studio-freight/react-lenis';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'react-hot-toast';
 
@@ -16,7 +16,7 @@ export function Providers({ children }: ProvidersProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
+      <ReactLenisType root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
         <Toaster
           position="bottom-right"
           toastOptions={{
@@ -30,7 +30,7 @@ export function Providers({ children }: ProvidersProps) {
           }}
         />
         {children}
-      </ReactLenis>
+      </ReactLenisType>
     </ThemeProvider>
   );
 } 
