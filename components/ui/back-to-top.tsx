@@ -1,49 +1,58 @@
 "use client"
 
-import { motion, useScroll, useSpring } from "framer-motion"
-import { useEffect, useState } from "react"
-import { ArrowUp } from "lucide-react"
+import { useEffect, useState, useCallback, memo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUp } from 'lucide-react';
+import { Button } from './button';
+import { Tooltip } from './tooltip';
 
-export function BackToTop() {
-  const [isVisible, setIsVisible] = useState(false)
-  const { scrollYProgress } = useScroll()
-  const opacity = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  })
+const SCROLL_THRESHOLD = 300;
+
+export const BackToTop = memo(function BackToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleScroll = useCallback(() => {
+    const shouldShow = window.scrollY > SCROLL_THRESHOLD;
+    if (isVisible !== shouldShow) {
+      setIsVisible(shouldShow);
+    }
+  }, [isVisible]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 400)
-    }
+    handleScroll(); // Check initial position
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
-    })
-  }
+      behavior: 'smooth',
+    });
+  }, []);
 
   return (
-    <motion.button
-      className="fixed bottom-8 right-8 p-3 rounded-full bg-gradient-to-r from-indigo-500 to-rose-500 text-white shadow-lg z-50"
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ 
-        opacity: isVisible ? 1 : 0,
-        scale: isVisible ? 1 : 0,
-        y: isVisible ? 0 : 20
-      }}
-      transition={{ duration: 0.3 }}
-      onClick={scrollToTop}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-    >
-      <ArrowUp className="w-6 h-6" />
-    </motion.button>
-  )
-} 
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          className="fixed bottom-8 right-8 z-40"
+          initial={{ opacity: 0, scale: 0.5, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, y: 10 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Tooltip content="Scroll to top" side="left">
+            <Button
+              onClick={scrollToTop}
+              size="icon"
+              className="h-10 w-10 rounded-full shadow-lg will-change-transform"
+            >
+              <ArrowUp className="h-5 w-5" />
+              <span className="sr-only">Scroll to top</span>
+            </Button>
+          </Tooltip>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}); 
