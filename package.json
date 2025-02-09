@@ -41,7 +41,6 @@
     "@radix-ui/react-tooltip": "^1.1.7",
     "@react-spring/web": "^9.7.5",
     "@studio-freight/react-lenis": "^0.0.47",
-    "@types/three": "^0.173.0",
     "@use-gesture/react": "^10.3.1",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
@@ -66,7 +65,6 @@
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.173.0",
     "vaul": "^0.9.6",
     "zod": "^3.24.1"
   },
